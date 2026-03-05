@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.8 - Avaliacao e Qualidade | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}.dark body{background-color:#111827}html:not(.dark) body{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 50%,#f1f5f9 100%)}html:not(.dark) .bg-dark-900{background-color:#fff}html:not(.dark) .bg-dark-800{background-color:#f9fafb}html:not(.dark) .bg-dark-700{background-color:#f3f4f6}html:not(.dark) .bg-dark-600{background-color:#e5e7eb}html:not(.dark) .text-neutral-100{color:#111827}html:not(.dark) .text-neutral-300{color:#4b5563}html:not(.dark) .text-neutral-400{color:#6b7280}html:not(.dark) .text-neutral-500{color:#9ca3af}html:not(.dark) .border-dark-600{border-color:#d1d5db}html:not(.dark) .border-dark-700{border-color:#e5e7eb}</style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-14"><div class="flex items-center space-x-4"><a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🎯</span><span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span></a><span class="text-neutral-600">|</span><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a></div><div class="flex items-center space-x-1 sm:space-x-2"><a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a><a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Tecnicas</span></a><a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avancado</span></a><button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2"><svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg><svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div></div></nav>
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4"><div class="flex items-center space-x-2 text-sm text-neutral-400"><a href="../../index.html" class="hover:text-emerald-400">Inicio</a><span>/</span><a href="index.html" class="hover:text-emerald-400">Trilha 1</a><span>/</span><span class="text-emerald-400">Modulo 1.8</span></div></nav>
+
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULO 1.8</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">✅ Avaliacao e Qualidade</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Criterios objetivos, rubricas e checklists para avaliar prompts e respostas de forma sistematica. Saia do "achismo" e entre na avaliacao profissional.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Inter.</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Pratica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span><h2 class="text-2xl font-bold">📏 Criterios Objetivos vs Subjetivos</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Criterios <strong class="text-emerald-400">objetivos</strong> sao verificaveis por qualquer pessoa: "tem 5 itens", "esta em JSON", "nao excede 100 palavras". Criterios <strong class="text-emerald-400">subjetivos</strong> dependem de interpretacao: "esta bom", "tom adequado". Priorize objetivos.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ Criterios Objetivos</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Contagem: "exatamente 5 itens"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Presenca: "inclui titulo e CTA"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Formato: "JSON valido"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tamanho: "max 200 palavras"</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">~ Criterios Subjetivos</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400">~</span><span>"Esta bom" (para quem?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">~</span><span>"Tom adequado" (qual tom?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">~</span><span>"Criativo" (comparado a que?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400">~</span><span>"Completo" (cobriu o que?)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Como Objetificar Subjetivos</h3>
+        <p class="text-neutral-300">"Tom adequado" → "Sem girias, sem jargao, frases de max 20 palavras, usa 'voce' em vez de 'o usuario'". Transforme cada criterio subjetivo em 2-3 regras verificaveis.</p>
+      </div>
+    </section>
+
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span><h2 class="text-2xl font-bold">📋 Rubrica de Avaliacao</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Uma <strong class="text-emerald-400">rubrica</strong> transforma avaliacao de "achismo" em processo sistematico. Use 5 dimensoes, escala 0-2 cada, meta de 7/10 ou mais para aprovar.</p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📊</span> Rubrica de Autoavaliacao (0-2 por item)</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-900 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2"><span class="text-white font-semibold">1. Clareza do Objetivo</span><span class="text-emerald-400 font-mono">__/2</span></div>
+            <p class="text-neutral-400 text-sm">0 = vago/ausente | 1 = presente mas impreciso | 2 = especifico e mensuravel</p>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2"><span class="text-white font-semibold">2. Formato de Saida</span><span class="text-emerald-400 font-mono">__/2</span></div>
+            <p class="text-neutral-400 text-sm">0 = nao definido | 1 = parcialmente definido | 2 = completo com campos e limites</p>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2"><span class="text-white font-semibold">3. Criterios Verificaveis</span><span class="text-emerald-400 font-mono">__/2</span></div>
+            <p class="text-neutral-400 text-sm">0 = sem criterios | 1 = criterios vagos | 2 = criterios objetivos e checkaveis</p>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2"><span class="text-white font-semibold">4. Consistencia Interna</span><span class="text-emerald-400 font-mono">__/2</span></div>
+            <p class="text-neutral-400 text-sm">0 = contradicoes | 1 = parcialmente alinhado | 2 = objetivo→requisitos→saida coerentes</p>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2"><span class="text-white font-semibold">5. Teste e Refinamento</span><span class="text-emerald-400 font-mono">__/2</span></div>
+            <p class="text-neutral-400 text-sm">0 = nao testou | 1 = testou 1x | 2 = testou em facil+dificil e refinou</p>
+          </div>
+        </div>
+        <div class="mt-4 p-3 bg-emerald-500/10 rounded-lg">
+          <p class="text-emerald-400 font-semibold">Meta: 7/10 ou mais para aprovar o prompt</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span><h2 class="text-2xl font-bold">🔍 Validacao de Formato</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed"><strong class="text-emerald-400">Validacao de formato</strong> e a verificacao mais simples e automatizavel: a saida veio no formato pedido? JSON e valido? Tem o numero certo de itens? Campos estao presentes?</p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">✅</span> Checklist de Formato</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Tipo correto?</strong> Se pediu JSON, veio JSON parseavel? Se pediu tabela, veio com | e colunas?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Quantidade correta?</strong> Pediu 5 itens, vieram 5? Nem 4, nem 6?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Campos presentes?</strong> Todos os campos obrigatorios estao preenchidos?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Limites respeitados?</strong> Maximo de palavras, tamanho de celula, profundidade?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Sem lixo?</strong> Nao veio texto extra antes/depois do formato pedido?</span></li>
+        </ul>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Automatizando Validacao</h3>
+        <p class="text-neutral-300">Para JSON, use um parser (JSON.parse em JS, json.loads em Python). Para contagens, use regex ou split. Para limites de palavras, conte com split(" ").length. Validacao automatica escala para pipelines.</p>
+      </div>
+    </section>
+
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span><h2 class="text-2xl font-bold">⚖️ Consistencia entre Execucoes</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Execute o mesmo prompt <strong class="text-emerald-400">3-5 vezes</strong> e compare os resultados. Um prompt bom gera saidas consistentes em estrutura e qualidade, mesmo que o conteudo varie ligeiramente.</p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🔄</span> O que Avaliar na Consistencia</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Estrutura:</strong> Sempre vem no mesmo formato? Mesma quantidade de itens?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Tom:</strong> Mantem o mesmo nivel de formalidade?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Qualidade:</strong> Nivel de profundidade similar? Nao oscila entre raso e profundo?</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Aderencia:</strong> Sempre respeita as restricoes? Ou as vezes ignora?</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Se a Consistencia e Baixa</h3>
+        <p class="text-neutral-300">Provavel que o prompt tem ambiguidade ou faltam restricoes. Adicione: formato explicito, exemplos (few-shot), e instrucoes mais detalhadas. Quanto mais especifico o prompt, mais consistente o resultado.</p>
+      </div>
+    </section>
+
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span><h2 class="text-2xl font-bold">🏆 Criterios de Dominio</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Como saber que voce <strong class="text-emerald-400">domina</strong> os fundamentos de engenharia de prompts? Estes sao os indicadores de competencia que marcam a transicao de iniciante para praticante.</p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🏆</span> Voce Domina Fundamentos Quando:</h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">✓</span><span>Declara objetivo, formato e criterios em <strong>cada</strong> prompt — naturalmente, sem pensar</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">✓</span><span>Testa o mesmo prompt em casos faceis <strong>e</strong> dificeis e refina conscientemente</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">✓</span><span>Identifica ambiguidade em prompts de outros e sabe como corrigir</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">✓</span><span>Tem uma biblioteca pessoal de prompts testados e versionados</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">✓</span><span>Consegue explicar POR QUE um prompt funciona, nao apenas QUE funciona</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">✓</span><span>Seus prompts sao reproduziveis — outros usam e obtem resultados similares</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span><h2 class="text-2xl font-bold">🧪 Exercicio Final: Avaliacao Completa</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Exercicio final da trilha: avalie <strong class="text-emerald-400">3 prompts completos</strong> (seus e de outros) usando a rubrica e sugira melhorias concretas para cada um.</p>
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">📋</span> Instrucoes do Exercicio Final</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">1.</span><span>Escolha 1 prompt seu + 2 prompts de colegas ou encontrados online</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">2.</span><span>Avalie cada um com a rubrica de 5 dimensoes (nota de 0-10)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">3.</span><span>Para cada dimensao abaixo de 2, escreva uma sugestao de melhoria concreta</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">4.</span><span>Reescreva o prompt com nota mais baixa aplicando as melhorias</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">5.</span><span>Teste a versao original vs melhorada e documente a diferenca</span></li>
+        </ul>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Entrega</h3>
+        <p class="text-neutral-300">Publique no GitHub Discussions com: prompt original, avaliacao (rubrica), prompt melhorado, comparacao de resultados, e o que voce aprendeu. Compartilhar consolida o aprendizado e ajuda outros.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL DA TRILHA -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎓</span> Resumo do Modulo e Conclusao da Trilha</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Criterios objetivos > subjetivos</strong><span class="text-neutral-400"> — Contagens, presenca, formato, limites verificaveis</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Rubrica de 5 dimensoes</strong><span class="text-neutral-400"> — Clareza, formato, criterios, consistencia, teste. Meta: 7/10</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Validacao de formato e automatizavel</strong><span class="text-neutral-400"> — JSON parsing, contagem, presenca de campos</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Consistencia indica qualidade do prompt</strong><span class="text-neutral-400"> — Mesma entrada, resultados similares = prompt robusto</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Dominio = habito, nao decorar</strong><span class="text-neutral-400"> — Quando voce faz naturalmente, dominou</span></div></div>
+        </div>
+
+        <div class="bg-emerald-500/10 rounded-lg p-6 mb-8 border border-emerald-500/20">
+          <h3 class="font-semibold text-emerald-400 mb-3 text-lg">🎉 Trilha 1 Concluida!</h3>
+          <p class="text-neutral-300 mb-2">Voce completou todos os 8 modulos de Fundamentos. Agora voce tem a base necessaria para criar prompts profissionais de forma sistematica.</p>
+          <p class="text-neutral-400 text-sm">Proxima trilha: <strong class="text-blue-400">Tecnicas</strong> — padroes avancados como Chain-of-Thought, Tree-of-Thought, meta-prompting e mais.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
+          <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Trilha 2: Tecnicas →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Engenharia de Prompts 2.0 - 2026</p></div></footer>
+  <script>const themeToggle=document.getElementById('theme-toggle'),themeToggleDarkIcon=document.getElementById('theme-toggle-dark-icon'),themeToggleLightIcon=document.getElementById('theme-toggle-light-icon'),html=document.documentElement;if(localStorage.getItem('theme')==='light'||(!localStorage.getItem('theme')&&!html.classList.contains('dark'))){themeToggleDarkIcon.classList.remove('hidden');html.classList.remove('dark')}else{themeToggleLightIcon.classList.remove('hidden')}themeToggle.addEventListener('click',()=>{themeToggleDarkIcon.classList.toggle('hidden');themeToggleLightIcon.classList.toggle('hidden');html.classList.toggle('dark');localStorage.setItem('theme',html.classList.contains('dark')?'dark':'light')})</script>
+</body>
+</html>
