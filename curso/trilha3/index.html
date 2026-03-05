@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 3 - Avancado | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        TRILHA 3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚀 Engenharia de Prompts Avancada</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Producao, agentes, RAG, guardrails e orquestracao. Leve seus prompts do laboratorio para sistemas reais em escala.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">8</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">48</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">~4h</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- NAVEGACAO RAPIDA -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <a href="#modulo-3-1" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.1</span>
+        <p class="font-medium text-sm mt-1">System Prompts para Producao</p>
+      </a>
+      <a href="#modulo-3-2" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.2</span>
+        <p class="font-medium text-sm mt-1">Tool Use e Function Calling</p>
+      </a>
+      <a href="#modulo-3-3" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.3</span>
+        <p class="font-medium text-sm mt-1">RAG (Retrieval-Augmented Generation)</p>
+      </a>
+      <a href="#modulo-3-4" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.4</span>
+        <p class="font-medium text-sm mt-1">Agentes de IA</p>
+      </a>
+      <a href="#modulo-3-5" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.5</span>
+        <p class="font-medium text-sm mt-1">Guardrails e Seguranca</p>
+      </a>
+      <a href="#modulo-3-6" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.6</span>
+        <p class="font-medium text-sm mt-1">Avaliacao Automatizada (Evals)</p>
+      </a>
+      <a href="#modulo-3-7" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.7</span>
+        <p class="font-medium text-sm mt-1">Pipelines e Orquestracao</p>
+      </a>
+      <a href="#modulo-3-8" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-purple-500/50 hover:text-purple-400 transition-colors">
+        <span class="text-purple-400 font-bold text-sm">3.8</span>
+        <p class="font-medium text-sm mt-1">Projeto Final e Masterclass</p>
+      </a>
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="flex items-center mb-8">
+      <div class="flex-1 h-px bg-dark-600"></div>
+      <span class="px-4 text-neutral-500 text-sm font-medium">Conteudo Detalhado</span>
+      <div class="flex-1 h-px bg-dark-600"></div>
+    </div>
+
+    <!-- MODULO 3.1 -->
+    <div id="modulo-3-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.1</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🏗️ System Prompts para Producao</h3>
+        <p class="text-neutral-400 text-sm">Projete system prompts robustos, versionados e testados para aplicacoes reais em producao.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🧬</span>
+            <div>
+              <span class="font-medium">Anatomia do System Prompt</span>
+              <span class="text-neutral-500 text-sm ml-2">— Estrutura completa para producao</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">O system prompt e a instrucao persistente que define o comportamento global do modelo. Em producao, ele inclui identidade, capacidades, restricoes, formato padrao e regras de seguranca.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">System prompts mal projetados causam inconsistencias em escala. Dominar sua anatomia garante comportamento previsivel em milhares de interacoes.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Secoes do system prompt (identidade, instrucoes, restricoes, formato), hierarquia de prioridade, separacao de responsabilidades entre system e user prompt.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🛡️</span>
+            <div>
+              <span class="font-medium">Guardrails no System Prompt</span>
+              <span class="text-neutral-500 text-sm ml-2">— Limites e protecoes embutidos</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Regras de seguranca escritas diretamente no system prompt: topicos proibidos, limites de acao, respostas padrao para situacoes de risco e instrucoes de fallback.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Em producao, o modelo interage com usuarios imprevisíveis. Guardrails no system prompt sao a primeira linha de defesa contra uso indevido.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Instrucoes negativas eficazes, listas de topicos proibidos, respostas de recusa educadas, escalonamento para humanos, limites de escopo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">📋</span>
+            <div>
+              <span class="font-medium">Versionamento</span>
+              <span class="text-neutral-500 text-sm ml-2">— Controle de versao para prompts</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Pratica de manter versoes numeradas do system prompt com changelog, permitindo rollback, comparacao e auditoria de mudancas ao longo do tempo.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Sem versionamento, voce nao sabe qual versao do prompt causou um bug ou melhoria. Em producao, rastreabilidade e essencial.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Semantic versioning para prompts, git para prompts, changelog estruturado, tags de versao, ambiente de staging vs producao.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🧪</span>
+            <div>
+              <span class="font-medium">Testes de Regressao</span>
+              <span class="text-neutral-500 text-sm ml-2">— Garantir que mudancas nao quebram</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Conjunto de casos de teste que verificam se uma mudanca no system prompt nao quebrou comportamentos que antes funcionavam corretamente.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Cada ajuste no prompt pode ter efeitos colaterais. Testes de regressao detectam quebras antes que cheguem aos usuarios.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Suite de testes, casos de borda, golden datasets, comparacao automatica de saidas, threshold de aceitacao.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">⚙️</span>
+            <div>
+              <span class="font-medium">Patterns de Producao</span>
+              <span class="text-neutral-500 text-sm ml-2">— Padroes comprovados em escala</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Padroes arquiteturais comprovados para system prompts em producao: modularizacao, templates parametrizados, composicao dinamica e injecao de contexto.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Patterns de producao evitam reinventar a roda e trazem solucoes testadas por equipes que ja operaram LLMs em escala.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Prompt modular, template com variaveis, composicao em runtime, feature flags para prompts, A/B testing de system prompts.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🚀</span>
+            <div>
+              <span class="font-medium">Exercicio: System Prompt Completo</span>
+              <span class="text-neutral-500 text-sm ml-2">— Projetar um system prompt de producao</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-purple-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Exercicio pratico: criar um system prompt completo para um assistente de producao, incluindo identidade, guardrails, formato e testes de regressao.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">A pratica integrada de todos os conceitos do modulo consolida o aprendizado e cria um artefato reutilizavel.</p>
+              </div>
+              <div>
+                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Projeto end-to-end, checklist de producao, documentacao do prompt, entrega com testes incluidos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.2 -->
+    <div id="modulo-3-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.2</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔧 Tool Use e Function Calling</h3>
+        <p class="text-neutral-400 text-sm">Conecte LLMs a ferramentas externas: APIs, bancos de dados, calculadoras e sistemas reais.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🔌</span><div><span class="font-medium">Conceito de Tool Use</span><span class="text-neutral-500 text-sm ml-2">— LLMs que usam ferramentas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Capacidade do LLM de identificar quando precisa de uma ferramenta externa, gerar a chamada correta e usar o resultado para compor a resposta final.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tool use transforma o LLM de gerador de texto em agente capaz de interagir com o mundo real — consultar dados, executar acoes e acessar informacoes atualizadas.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Tool use vs texto puro, quando o modelo decide chamar uma ferramenta, ciclo request-tool-response, ferramentas como extensoes do modelo.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📐</span><div><span class="font-medium">Function Calling Schema</span><span class="text-neutral-500 text-sm ml-2">— Definindo a interface da ferramenta</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Especificacao formal da ferramenta usando JSON Schema: nome, descricao, parametros obrigatorios e opcionais, tipos de dados e valores permitidos.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um schema bem definido determina se o modelo vai chamar a ferramenta corretamente. Schema ruim = chamadas erradas e erros em cascata.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">JSON Schema, parametros required vs optional, tipos de dados, enums, descricoes de campos, validacao de schema.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">📝</span><div><span class="font-medium">Descricao de Ferramentas</span><span class="text-neutral-500 text-sm ml-2">— A arte de descrever tools para o modelo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Escrever descricoes claras e precisas de cada ferramenta e seus parametros, guiando o modelo sobre quando e como usa-las.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A descricao e o "prompt" da ferramenta — descricoes vagas fazem o modelo escolher a ferramenta errada ou passar parametros incorretos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Descricao da funcao, descricao de parametros, exemplos de uso, quando usar vs quando nao usar, disambiguacao entre ferramentas.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🔄</span><div><span class="font-medium">Orquestracao de Chamadas</span><span class="text-neutral-500 text-sm ml-2">— Multiplas ferramentas em sequencia</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Gerenciar chamadas a multiplas ferramentas em sequencia ou paralelo, passando resultados de uma como entrada de outra.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tarefas complexas exigem multiplas ferramentas coordenadas. Saber orquestrar chamadas e essencial para agentes funcionais.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Chamadas sequenciais vs paralelas, passagem de contexto entre tools, limite de chamadas, loop de tool use.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">⚠️</span><div><span class="font-medium">Tratamento de Erros</span><span class="text-neutral-500 text-sm ml-2">— Quando a ferramenta falha</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrategias para lidar com falhas de ferramentas: timeouts, erros de API, respostas inesperadas e como instruir o modelo a reagir graciosamente.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Em producao, ferramentas falham. Sem tratamento de erros, o modelo alucina ou trava. Resiliencia e obrigatoria.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Retry com backoff, fallback gracioso, mensagens de erro amigaveis, logging de falhas, circuito breaker.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Integrar uma API</span><span class="text-neutral-500 text-sm ml-2">— Pratica com tool use real</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: definir o schema de uma ferramenta para uma API real, configurar o tool use e testar chamadas end-to-end.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica com uma API real consolida todos os conceitos e revela desafios que so aparecem na implementacao.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Definicao de schema, teste de chamada, validacao de resposta, iteracao do schema baseada em erros.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.3 -->
+    <div id="modulo-3-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.3</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📖 RAG (Retrieval-Augmented Generation)</h3>
+        <p class="text-neutral-400 text-sm">Combine busca em documentos com geracao: respostas precisas baseadas em dados reais.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">📚</span><div><span class="font-medium">Conceito de RAG</span><span class="text-neutral-500 text-sm ml-2">— Busca + geracao combinadas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Arquitetura que busca informacoes relevantes em uma base de dados antes de gerar a resposta, fundamentando o modelo em dados reais em vez de depender apenas da memoria parametrica.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">RAG reduz alucinacoes dramaticamente ao ancorar respostas em documentos verificaveis. E o padrao para aplicacoes empresariais com dados proprietarios.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Retrieve → Augment → Generate, base de conhecimento, contexto injetado, fundamentacao factual, memoria parametrica vs memoria externa.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">✂️</span><div><span class="font-medium">Chunking e Embeddings</span><span class="text-neutral-500 text-sm ml-2">— Preparando documentos para busca</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Processo de dividir documentos em pedacos (chunks) e converter cada pedaco em vetores numericos (embeddings) que capturam o significado semantico.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A qualidade do chunking e dos embeddings determina a qualidade da busca. Chunks ruins = contexto irrelevante = respostas ruins.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Tamanho de chunk, overlap, estrategias de chunking (por paragrafo, por sentenca, recursivo), modelos de embedding, vector stores.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔍</span><div><span class="font-medium">Busca Semantica</span><span class="text-neutral-500 text-sm ml-2">— Encontrando contexto relevante</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Busca por similaridade de significado (nao palavras exatas): a pergunta do usuario e convertida em vetor e comparada com os vetores dos chunks armazenados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Busca semantica encontra informacoes relevantes mesmo quando o usuario usa palavras diferentes das do documento original.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Similaridade cosseno, top-k retrieval, re-ranking, busca hibrida (semantica + keyword), filtragem por metadados.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">📄</span><div><span class="font-medium">Prompt com Contexto Recuperado</span><span class="text-neutral-500 text-sm ml-2">— Montando o prompt com RAG</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tecnica de montar o prompt final inserindo os chunks recuperados como contexto, instruindo o modelo a basear a resposta exclusivamente nessas fontes.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A forma como voce injeta o contexto no prompt afeta drasticamente a qualidade. Instrucoes erradas fazem o modelo ignorar os documentos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template de RAG prompt, instrucao de fundamentacao, citacao de fontes, "responda apenas com base no contexto", delimitacao de contexto.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">📊</span><div><span class="font-medium">Avaliacao de RAG</span><span class="text-neutral-500 text-sm ml-2">— Medindo qualidade do pipeline</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Metricas e metodos para avaliar a qualidade do RAG: a busca trouxe documentos relevantes? A resposta usou o contexto corretamente? Ha alucinacoes?</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem avaliacao, voce nao sabe se o RAG esta funcionando. Metricas permitem identificar gargalos (busca ruim vs geracao ruim).</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Faithfulness, relevance, recall da busca, precisao da resposta, RAGAS framework, avaliacao humana vs automatica.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Pipeline RAG Simples</span><span class="text-neutral-500 text-sm ml-2">— Construir um RAG basico</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: montar um pipeline RAG simples — chunkar documentos, gerar embeddings, buscar e gerar resposta fundamentada.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Construir um RAG do zero revela as decisoes de design e trade-offs que ferramentas prontas escondem.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Implementacao end-to-end, escolha de chunk size, teste com perguntas reais, iteracao baseada em resultados.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.4 -->
+    <div id="modulo-3-4" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.4</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🤖 Agentes de IA</h3>
+        <p class="text-neutral-400 text-sm">Construa agentes autonomos que planejam, executam e iteram para resolver tarefas complexas.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🧠</span><div><span class="font-medium">O que sao Agentes</span><span class="text-neutral-500 text-sm ml-2">— LLMs que agem autonomamente</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Agentes sao sistemas onde o LLM decide quais acoes tomar, executa ferramentas, observa resultados e itera ate completar a tarefa — sem intervencao humana a cada passo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Agentes representam o proximo passo alem de prompts simples: sistemas que resolvem problemas complexos de forma autonoma.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Agente vs chatbot, loop de acao-observacao, autonomia controlada, ReAct pattern, agente como orquestrador.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📋</span><div><span class="font-medium">Loop de Planejamento</span><span class="text-neutral-500 text-sm ml-2">— Pensar antes de agir</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ciclo onde o agente analisa a tarefa, cria um plano de passos, executa cada passo, avalia o resultado e ajusta o plano se necessario.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Agentes sem planejamento agem de forma caotica. O loop de planejamento traz ordem e previsibilidade as acoes autonomas.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Plan → Execute → Observe → Reflect, decomposicao de tarefas, re-planejamento, criterios de parada.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">💾</span><div><span class="font-medium">Memoria e Estado</span><span class="text-neutral-500 text-sm ml-2">— Lembrando o que ja fez</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Mecanismos para o agente manter contexto entre acoes: memoria de curto prazo (conversa), memoria de longo prazo (banco de dados) e estado da tarefa.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem memoria, o agente repete acoes e perde contexto. Gerenciar memoria e essencial para tarefas que levam multiplos passos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Scratchpad, memoria de trabalho, sumarizacao de historico, estado persistente, janela de contexto como limitador.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">👥</span><div><span class="font-medium">Multi-Agentes</span><span class="text-neutral-500 text-sm ml-2">— Agentes que colaboram</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Arquitetura onde multiplos agentes especializados colaboram: um planeja, outro executa, outro revisa — cada um com seu system prompt e ferramentas.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Problemas complexos se beneficiam de divisao de trabalho entre agentes especializados, assim como equipes humanas.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Orquestrador + trabalhadores, comunicacao entre agentes, delegacao de tarefas, consenso, topologias de multi-agentes.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔒</span><div><span class="font-medium">Limites e Seguranca</span><span class="text-neutral-500 text-sm ml-2">— Controle de agentes autonomos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Guardrails especificos para agentes: limite de iteracoes, acoes permitidas, confirmacao humana para acoes criticas, sandbox de execucao.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Agentes autonomos podem causar danos reais se nao tiverem limites. Seguranca de agentes e uma responsabilidade critica.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Max iterations, lista de acoes permitidas, human-in-the-loop, principio do menor privilegio, logging de acoes.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Agente com Ferramentas</span><span class="text-neutral-500 text-sm ml-2">— Construir um agente funcional</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: criar um agente com 3 ferramentas, loop de planejamento e limites de seguranca para resolver uma tarefa multi-passo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Construir um agente do zero revela a complexidade real e ensina a equilibrar autonomia com controle.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">System prompt de agente, definicao de ferramentas, loop de execucao, criterio de parada, teste end-to-end.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-4.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.5 -->
+    <div id="modulo-3-5" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.5</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🛡️ Guardrails e Seguranca</h3>
+        <p class="text-neutral-400 text-sm">Proteja suas aplicacoes com guardrails, filtros e defesas contra prompt injection.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">⚡</span><div><span class="font-medium">Tipos de Ameacas</span><span class="text-neutral-500 text-sm ml-2">— Mapa de riscos em LLMs</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Panorama das ameacas a aplicacoes com LLMs: prompt injection, data leakage, jailbreaking, alucinacoes maliciosas, abuso de ferramentas e engenharia social.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Voce nao pode se defender do que nao conhece. Mapear ameacas e o primeiro passo para construir defesas eficazes.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">OWASP Top 10 para LLMs, superficie de ataque, vetor de ameaca, impacto vs probabilidade, modelo de ameacas.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">💉</span><div><span class="font-medium">Prompt Injection</span><span class="text-neutral-500 text-sm ml-2">— O ataque mais comum</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tecnica onde o usuario insere instrucoes maliciosas no input para fazer o modelo ignorar o system prompt e seguir comandos nao autorizados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompt injection e a vulnerabilidade #1 em aplicacoes LLM. Toda aplicacao em producao precisa de defesas contra esse ataque.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Injection direto vs indireto, exemplos de ataque, separacao de dados e instrucoes, defesa em camadas, deteccao de injection.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔎</span><div><span class="font-medium">Output Filtering</span><span class="text-neutral-500 text-sm ml-2">— Filtrando respostas perigosas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Camada de verificacao que analisa a saida do modelo antes de entrega-la ao usuario, bloqueando conteudo perigoso, dados sensiveis ou respostas fora do escopo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Mesmo com bons guardrails no prompt, o modelo pode gerar conteudo indesejado. Output filtering e a ultima linha de defesa.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Filtros regex, classificadores de conteudo, PII detection, blocklists, resposta de fallback quando filtro ativa.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🔧</span><div><span class="font-medium">Guardrails Programaticos</span><span class="text-neutral-500 text-sm ml-2">— Protecoes em codigo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Guardrails implementados em codigo (nao apenas no prompt): validacao de schema, rate limiting, logging, classificacao de input e sanitizacao de dados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Guardrails no prompt podem ser burlados. Guardrails programaticos sao mais robustos e verificaveis.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Guardrails AI framework, NeMo Guardrails, validacao de entrada/saida, middleware de seguranca, defesa em profundidade.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🎯</span><div><span class="font-medium">Red Teaming</span><span class="text-neutral-500 text-sm ml-2">— Atacar para defender</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pratica de testar suas proprias defesas tentando burla-las: simular ataques de prompt injection, jailbreaking e abuso para encontrar vulnerabilidades.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Se voce nao testar suas defesas, atacantes reais vao. Red teaming proativo encontra falhas antes que causem danos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Adversarial testing, catalogo de ataques, teste sistematico, report de vulnerabilidades, ciclo de melhoria de defesas.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Testar Defesas</span><span class="text-neutral-500 text-sm ml-2">— Red team no seu proprio sistema</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: montar guardrails para um system prompt, depois tentar burla-los com 10 ataques diferentes e documentar os resultados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A experiencia pratica de atacar e defender desenvolve a mentalidade de seguranca essencial para producao.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Catalogo de ataques, documentacao de resultados, taxa de sucesso de defesa, iteracao de guardrails.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-5.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.6 -->
+    <div id="modulo-3-6" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.6</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📊 Avaliacao Automatizada (Evals)</h3>
+        <p class="text-neutral-400 text-sm">Crie pipelines de avaliacao automatizada para medir e melhorar a qualidade sistematicamente.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Por que Automatizar Evals</span><span class="text-neutral-500 text-sm ml-2">— Escala exige automacao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Transicao de avaliacao manual (humano lendo cada saida) para avaliacao automatizada que roda em centenas de casos em segundos.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Avaliacao manual nao escala. Em producao, voce precisa testar cada mudanca de prompt contra centenas de casos automaticamente.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Avaliacao manual vs automatica, custo de avaliacao, velocidade de feedback, integracao com CI/CD.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📏</span><div><span class="font-medium">Metricas e Criterios</span><span class="text-neutral-500 text-sm ml-2">— O que medir e como</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definicao de metricas quantitativas para avaliar saidas de LLM: acuracia, completude, formato correto, aderencia a instrucoes, ausencia de alucinacoes.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem metricas claras, "melhorou" e opiniao. Com metricas, e fato mensuravel que guia decisoes de produto.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Metricas de exatidao, metricas de formato, metricas de seguranca, agregacao de scores, threshold de aprovacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🤖</span><div><span class="font-medium">LLM-as-Judge</span><span class="text-neutral-500 text-sm ml-2">— Usando LLM para avaliar LLM</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tecnica de usar um LLM (geralmente mais capaz) para avaliar a saida de outro LLM, substituindo parcialmente avaliadores humanos com prompts de avaliacao bem projetados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">LLM-as-Judge escala avaliacao a custo baixo e correlaciona bem com avaliacao humana quando o prompt de julgamento e bem feito.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt de avaliacao, rubrica para o juiz, calibracao com humanos, vieses do juiz, pairwise comparison.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">📂</span><div><span class="font-medium">Datasets de Teste</span><span class="text-neutral-500 text-sm ml-2">— Criando golden datasets</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Conjuntos curados de pares input-output esperado que servem como referencia para avaliar o desempenho do prompt em diversos cenarios.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A qualidade dos evals depende da qualidade do dataset. Golden datasets sao o padrao-ouro contra o qual voce mede tudo.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Golden dataset, diversidade de casos, edge cases incluidos, atualizacao do dataset, balanceamento de cenarios.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔄</span><div><span class="font-medium">CI/CD para Prompts</span><span class="text-neutral-500 text-sm ml-2">— Deploy automatizado de prompts</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pipeline automatizado onde cada mudanca no prompt dispara testes automaticos e, se aprovado, faz deploy para producao — igual a CI/CD de codigo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">CI/CD para prompts traz a mesma confianca que CI/CD trouxe para codigo: nenhuma mudanca vai para producao sem ser testada.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pipeline de eval, gate de qualidade, rollback automatico, monitoramento pos-deploy, canary deployment para prompts.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Pipeline de Evals</span><span class="text-neutral-500 text-sm ml-2">— Montar avaliacao automatizada</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: criar um dataset de teste, definir metricas, implementar LLM-as-Judge e rodar avaliacao automatizada em duas versoes de um prompt.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Montar um pipeline de evals do zero ensina todas as decisoes de design e prepara para implementar em projetos reais.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Dataset creation, prompt de juiz, execucao em batch, comparacao de versoes, report de resultados.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-6.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.7 -->
+    <div id="modulo-3-7" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.7</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">⚙️ Pipelines e Orquestracao</h3>
+        <p class="text-neutral-400 text-sm">Conecte multiplos LLMs, ferramentas e etapas em pipelines robustos de producao.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🏗️</span><div><span class="font-medium">Arquitetura de Pipelines</span><span class="text-neutral-500 text-sm ml-2">— Estruturando fluxos de LLM</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Desenho de fluxos onde a saida de uma etapa alimenta a proxima: input → pre-processamento → LLM → pos-processamento → validacao → output.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Aplicacoes reais raramente usam um unico prompt. Pipelines permitem compor etapas especializadas em fluxos robustos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pipeline linear vs ramificado, etapas de transformacao, contrato entre etapas, diagramas de fluxo, composicao modular.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔗</span><div><span class="font-medium">Orquestracao de LLMs</span><span class="text-neutral-500 text-sm ml-2">— Coordenando multiplos modelos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Coordenacao de multiplos LLMs em um fluxo: usar modelo rapido para triagem, modelo potente para geracao, modelo especializado para avaliacao.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Nem toda etapa precisa do modelo mais caro. Orquestrar modelos diferentes otimiza custo, latencia e qualidade.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Roteamento de modelos, modelo por etapa, cascading (modelo barato primeiro, caro se necessario), ensemble de modelos.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔄</span><div><span class="font-medium">Fallbacks e Retries</span><span class="text-neutral-500 text-sm ml-2">— Resiliencia em producao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrategias para lidar com falhas em pipelines: retry com backoff exponencial, fallback para modelo alternativo, resposta padrao quando tudo falha.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">APIs de LLM falham (rate limits, timeouts, erros). Pipelines sem fallback quebram em producao. Resiliencia e obrigatoria.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Retry strategy, exponential backoff, fallback chain, circuit breaker, graceful degradation, resposta cached.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">👁️</span><div><span class="font-medium">Observabilidade</span><span class="text-neutral-500 text-sm ml-2">— Monitorando o que acontece</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pratica de registrar e monitorar cada etapa do pipeline: inputs, outputs, latencia, tokens usados, erros e metricas de qualidade em tempo real.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem observabilidade, voce nao sabe o que esta acontecendo em producao. Quando algo quebra, precisa diagnosticar rapidamente.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Logging estruturado, tracing distribuido, dashboards, alertas, metricas de latencia e custo, ferramentas (LangSmith, Weights & Biases).</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">💰</span><div><span class="font-medium">Custo e Escala</span><span class="text-neutral-500 text-sm ml-2">— Otimizando para producao real</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrategias para controlar custos e escalar pipelines: caching de respostas, batching, modelo certo por tarefa, otimizacao de tokens e pre-processamento.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Custo de LLM escala com uso. Sem otimizacao, a conta explode. Saber otimizar e diferencial para operar em escala.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Custo por request, caching semantico, batch processing, prompt compression, escolha de modelo por custo-beneficio.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Pipeline Multi-Etapas</span><span class="text-neutral-500 text-sm ml-2">— Construir um pipeline completo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: projetar e implementar um pipeline com 3+ etapas, fallback, logging e metricas de custo para uma tarefa real.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A implementacao pratica revela trade-offs entre simplicidade, robustez e custo que so aparecem na construcao real.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Design de pipeline, implementacao de etapas, teste integrado, medicao de custo e latencia, documentacao.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-7.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 3.8 -->
+    <div id="modulo-3-8" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.8</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🎓 Projeto Final e Masterclass</h3>
+        <p class="text-neutral-400 text-sm">Integre tudo: projete, implemente e avalie um sistema completo de prompts em producao.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">📋</span><div><span class="font-medium">Briefing do Projeto</span><span class="text-neutral-500 text-sm ml-2">— Definindo o desafio final</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Documento que define o problema a resolver, requisitos funcionais e nao-funcionais, restricoes tecnicas e criterios de aceitacao do projeto final.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Todo projeto de producao comeca com um briefing claro. Saber interpretar e criar briefings e competencia profissional essencial.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Definicao de problema, requisitos SMART, restricoes de escopo, criterios de sucesso, stakeholders.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📐</span><div><span class="font-medium">Design do Sistema</span><span class="text-neutral-500 text-sm ml-2">— Arquitetura antes do codigo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Fase de design onde voce define a arquitetura: quantos prompts, pipeline de etapas, ferramentas necessarias, modelo por etapa, guardrails e fluxo de dados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Pular o design e ir direto para implementacao gera retrabalho. Um bom design economiza tempo e resulta em sistema mais robusto.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Diagrama de arquitetura, escolha de modelos, design de prompts, planejamento de guardrails, trade-offs documentados.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">💻</span><div><span class="font-medium">Implementacao</span><span class="text-neutral-500 text-sm ml-2">— Construindo o sistema</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Fase de construcao: escrever os prompts, configurar ferramentas, montar o pipeline, integrar guardrails e conectar todas as partes do sistema.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A implementacao e onde a teoria encontra a realidade. Desafios praticos como latencia, formato e edge cases so aparecem aqui.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Desenvolvimento iterativo, prompt writing, integracao de componentes, teste unitario de cada etapa, versionamento.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🧪</span><div><span class="font-medium">Testes e Evals</span><span class="text-neutral-500 text-sm ml-2">— Validando o sistema completo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Fase de teste do sistema integrado: evals automatizados, teste de edge cases, red teaming, teste de carga e validacao contra criterios de aceitacao.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Testes integrados revelam problemas que testes unitarios nao pegam. Validar o sistema completo e requisito para producao.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Teste end-to-end, suite de evals, red teaming, teste de performance, report de qualidade, go/no-go decision.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🚀</span><div><span class="font-medium">Deploy e Monitoramento</span><span class="text-neutral-500 text-sm ml-2">— Colocando em producao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Processo de colocar o sistema em producao com monitoramento continuo: deploy gradual, alertas, dashboards e plano de rollback.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Deploy sem monitoramento e voar cego. Saber monitorar e reagir a problemas em producao e competencia critica.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Canary deploy, monitoramento de metricas, alertas automaticos, plano de rollback, post-mortem de incidentes.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🎤</span><div><span class="font-medium">Apresentacao e Review</span><span class="text-neutral-500 text-sm ml-2">— Compartilhando e recebendo feedback</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Apresentacao do projeto final: decisoes de design, resultados dos evals, licoes aprendidas e proximos passos. Review por pares com feedback construtivo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Apresentar e defender decisoes tecnicas e habilidade profissional. Feedback de pares revela pontos cegos e melhora o resultado.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Estrutura de apresentacao tecnica, metricas de sucesso, licoes aprendidas, feedback construtivo, portfolio profissional.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-8')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-8.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- NAVEGACAO -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+        ← Trilha Anterior: Tecnicas
+      </a>
+      <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+        Voltar ao Inicio →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- MODALS -->
+  <div id="modal-3-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-purple-400 font-bold">3.1</span>
+          <span class="font-semibold">System Prompts para Producao</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.2</span><span class="font-semibold">Tool Use e Function Calling</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.3</span><span class="font-semibold">RAG (Retrieval-Augmented Generation)</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-4" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.4</span><span class="font-semibold">Agentes de IA</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-5" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.5</span><span class="font-semibold">Guardrails e Seguranca</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-6" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.6</span><span class="font-semibold">Avaliacao Automatizada (Evals)</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-7" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.7</span><span class="font-semibold">Pipelines e Orquestracao</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-7.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-3-8" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.8</span><span class="font-semibold">Projeto Final e Masterclass</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-3-8.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Toggle de Topicos
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) {
+          exp.classList.remove('active');
+        }
+      });
+
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

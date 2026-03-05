@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.4 - Agentes de IA | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.4
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 Agentes de IA</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Construa agentes autonomos que planejam, executam e iteram para resolver tarefas complexas.</p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Arquitetura</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🤖 O que sao Agentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um <strong class="text-purple-400">agente de IA</strong> e um LLM que opera em um loop de acao: observar o ambiente, pensar sobre o que fazer, agir usando ferramentas e observar o resultado. Diferente de um chatbot simples que responde uma vez, o agente <strong class="text-purple-400">itera autonomamente</strong> ate completar a tarefa.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔄</span> Paradigma ReAct (Reasoning + Acting)
+        </h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">1</span>
+            <span><strong>Observar:</strong> O agente recebe a tarefa ou o resultado da acao anterior. Analisa o estado atual do problema.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">2</span>
+            <span><strong>Pensar:</strong> O LLM raciocina sobre qual a proxima acao necessaria. Gera um "pensamento" explicito antes de agir.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">3</span>
+            <span><strong>Agir:</strong> Escolhe e executa uma ferramenta (buscar na web, executar codigo, ler arquivo, chamar API).</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">4</span>
+            <span><strong>Observar resultado:</strong> Recebe o output da ferramenta e decide se a tarefa esta completa ou se precisa iterar.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Niveis de Autonomia
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-1">Assistente (Nivel 1)</h4>
+            <p class="text-neutral-300 text-sm">Responde perguntas e executa acoes simples quando solicitado. O humano controla cada passo. Exemplo: chatbot de FAQ.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-1">Copiloto (Nivel 2)</h4>
+            <p class="text-neutral-300 text-sm">Sugere acoes e executa com aprovacao. O humano supervisiona e aprova. Exemplo: GitHub Copilot, assistente de email.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-1">Agente (Nivel 3)</h4>
+            <p class="text-neutral-300 text-sm">Planeja e executa autonomamente multiplos passos. O humano define o objetivo e recebe o resultado. Exemplo: agente de pesquisa, coding agent.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Exemplos Reais de Agentes
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Browsing agents:</strong> Navegam a web, leem paginas, clicam em links e extraem informacoes para responder perguntas complexas.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Coding agents:</strong> Escrevem codigo, executam testes, debugam erros e iteram ate o codigo funcionar (ex.: Claude Code, Devin).</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Research agents:</strong> Buscam em multiplas fontes, sintetizam informacoes e produzem relatorios estruturados.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🗺️ Loop de Planejamento</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Agentes mais sofisticados nao apenas reagem — eles <strong class="text-purple-400">planejam antes de agir</strong>. O padrao plan-and-execute separa o planejamento da execucao, permitindo que o agente decomponha tarefas complexas em subtarefas gerenciaveis e replaneje quando algo falha.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🏗️</span> Padrao Plan-and-Execute
+        </h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">1</span>
+            <span><strong>Receber tarefa:</strong> O agente recebe um objetivo de alto nivel (ex.: "Pesquise os 5 melhores frameworks de IA e compare-os").</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">2</span>
+            <span><strong>Decompor em subtarefas:</strong> Divide em passos concretos — buscar cada framework, coletar features, montar tabela comparativa.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">3</span>
+            <span><strong>Executar passo a passo:</strong> Executa cada subtarefa em sequencia, usando ferramentas apropriadas para cada uma.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">4</span>
+            <span><strong>Replanejar se necessario:</strong> Se uma subtarefa falha ou revela nova informacao, o agente ajusta o plano restante.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-green-900/20 rounded-xl border border-green-500/30 p-6">
+          <h4 class="font-bold text-green-400 mb-4">✅ Quando Planejar</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Tarefas com multiplas etapas dependentes</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Objetivos complexos que exigem decomposicao</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Cenarios onde erros sao custosos (melhor planejar antes)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Tarefas que envolvem coordenar multiplas ferramentas</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">❌ Quando Executar Diretamente</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Tarefas simples de um unico passo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Respostas diretas que nao precisam de ferramentas</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Quando velocidade e mais importante que precisao</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Tarefas repetitivas com fluxo ja conhecido</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Profundidade de Planejamento
+        </h3>
+        <p class="text-neutral-300">Cuidado com <strong>over-planning</strong>: planejar demais antes de agir pode ser tao ruim quanto nao planejar. O ideal e planejar <strong>2-3 passos a frente</strong> e replanejar apos cada execucao. Planejamento muito detalhado tende a ficar obsoleto rapidamente quando o agente descobre novas informacoes durante a execucao.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🧠 Memoria e Estado</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um agente eficaz precisa <strong class="text-purple-400">manter contexto entre iteracoes</strong>. Sem memoria, o agente esquece o que ja fez, repete acoes e perde coerencia. Existem diferentes tipos de memoria, cada uma servindo um proposito especifico no funcionamento do agente.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">💬</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Short-term Memory (Buffer de Conversa)</h4>
+            <p class="text-neutral-300 text-sm mb-2">O historico recente da conversa — as ultimas mensagens trocadas entre o usuario, o agente e as ferramentas. E a forma mais simples de memoria.</p>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-purple-400">Vantagem:</strong> Simples de implementar, mantem contexto imediato.</li>
+              <li><strong class="text-purple-400">Limitacao:</strong> Restrita ao tamanho da context window do modelo.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">🗄️</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Long-term Memory (Vector Store)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Informacoes persistidas em um banco de dados vetorial. O agente pode buscar memorias relevantes de sessoes anteriores usando busca semantica.</p>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-purple-400">Vantagem:</strong> Persiste entre sessoes, escala para milhares de interacoes.</li>
+              <li><strong class="text-purple-400">Limitacao:</strong> Requer infraestrutura de vector store (Pinecone, Weaviate, ChromaDB).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">📝</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Working Memory (Scratchpad)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Uma area temporaria onde o agente armazena notas, resultados intermediarios e o estado atual da tarefa. Funciona como um "bloco de notas" mental.</p>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-purple-400">Vantagem:</strong> Permite ao agente rastrear progresso e acumular informacoes entre passos.</li>
+              <li><strong class="text-purple-400">Limitacao:</strong> Consome espaco na context window; precisa ser podada periodicamente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold">📋</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Summary Memory (Resumo Compactado)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Quando o historico fica longo demais, o agente gera um resumo das interacoes passadas e substitui as mensagens originais. Ideal para conversas longas.</p>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-purple-400">Vantagem:</strong> Mantem contexto essencial sem estourar a context window.</li>
+              <li><strong class="text-purple-400">Limitacao:</strong> Perde detalhes especificos durante a sumarizacao.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Gerenciamento de Context Window
+        </h3>
+        <p class="text-neutral-300 mb-3">A maior limitacao pratica de agentes e o <strong>tamanho da context window</strong>. Cada iteracao do loop adiciona mais tokens (pensamento, acao, resultado). Estrategias para gerenciar:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Sliding window:</strong> Manter apenas as N ultimas iteracoes no contexto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Sumarizacao periodica:</strong> A cada 5-10 iteracoes, resumir o historico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Externalizar estado:</strong> Salvar resultados intermediarios fora do contexto e recuperar quando necessario</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">👥 Multi-Agentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em vez de um unico agente fazendo tudo, <strong class="text-purple-400">sistemas multi-agentes</strong> dividem o trabalho entre agentes especializados. Cada agente tem um papel, ferramentas e instrucoes proprias. A coordenacao entre eles e o desafio central.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🏗️</span> Arquiteturas Multi-Agentes
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-2">Supervisor (Orquestrador)</h4>
+            <p class="text-neutral-300 text-sm">Um agente central recebe a tarefa, decide qual agente especialista deve trabalhar em cada parte e consolida os resultados. O supervisor controla o fluxo e resolve conflitos. E o padrao mais comum e previsivel.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-2">Peer-to-Peer (Colaborativo)</h4>
+            <p class="text-neutral-300 text-sm">Agentes se comunicam diretamente entre si, sem supervisor central. Cada agente decide quando precisa de ajuda e a quem pedir. Mais flexivel, mas mais dificil de controlar e debugar.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-2">Pipeline (Sequencial)</h4>
+            <p class="text-neutral-300 text-sm">Agentes trabalham em sequencia — o output de um e o input do proximo. Similar a uma linha de producao. Simples de implementar, mas limitado a fluxos lineares.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔧</span> Frameworks Multi-Agentes
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>CrewAI:</strong> Define agentes com roles, goals e backstories. Suporta tarefas sequenciais e paralelas. API simples e intuitiva.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>AutoGen (Microsoft):</strong> Agentes conversam entre si para resolver tarefas. Suporta human-in-the-loop e execucao de codigo.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>LangGraph:</strong> Modelagem de agentes como grafos de estado. Maximo controle sobre o fluxo, ideal para sistemas complexos em producao.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Especializacao vs. Generalismo
+        </h3>
+        <p class="text-neutral-300">Agentes especializados (cada um com poucas ferramentas e instrucoes focadas) tendem a performar melhor que um agente generalista com muitas ferramentas. A razao: <strong>quanto mais opcoes o LLM tem, maior a chance de escolher errado</strong>. Divida responsabilidades claramente entre agentes.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🛡️ Limites e Seguranca</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Agentes autonomos executam acoes reais no mundo — enviam emails, modificam arquivos, fazem chamadas de API. Sem <strong class="text-purple-400">guardrails adequados</strong>, um agente pode causar danos serios. Seguranca nao e opcional, e a base de qualquer sistema agente em producao.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-4 flex items-center">
+          <span class="mr-2">⚠️</span> Riscos de Agentes Autonomos
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Loops infinitos:</strong> O agente pode ficar preso em um ciclo sem convergir para uma solucao, consumindo tokens e recursos indefinidamente.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Acoes destrutivas:</strong> Deletar arquivos, enviar mensagens erradas, modificar dados em producao sem confirmacao.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Exfiltracao de dados:</strong> Um agente com acesso a dados sensiveis e a internet pode vazar informacoes involuntariamente.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span><strong>Prompt injection via ferramentas:</strong> Dados retornados por ferramentas podem conter instrucoes maliciosas que desviam o comportamento do agente.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔒</span> Praticas de Seguranca Essenciais
+        </h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">1</span>
+            <span><strong>Sandboxing:</strong> Execute acoes do agente em ambientes isolados. Containers, VMs ou permissoes restritas. Nunca de acesso root ou admin.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">2</span>
+            <span><strong>Rate limits:</strong> Limite o numero de acoes por minuto, custo maximo por execucao e numero maximo de iteracoes do loop.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">3</span>
+            <span><strong>Human-in-the-loop:</strong> Para acoes de alto impacto (enviar email, deletar dados, fazer pagamento), exija aprovacao humana antes de executar.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">4</span>
+            <span><strong>Principio do menor privilegio:</strong> De ao agente apenas as permissoes minimas necessarias. Se so precisa ler arquivos, nao de permissao de escrita.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">5</span>
+            <span><strong>Logging e auditoria:</strong> Registre cada acao, decisao e ferramenta chamada. Essencial para debugar problemas e auditar comportamento.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-green-900/20 rounded-xl border border-green-500/30 p-6">
+          <h4 class="font-bold text-green-400 mb-4">✅ Fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Definir limites claros de iteracoes (max 20-50)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Implementar circuit breakers para falhas consecutivas</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Validar outputs de ferramentas antes de usar</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Testar em ambiente staging antes de producao</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">❌ Evitar</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Dar acesso irrestrito a sistemas criticos</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Confiar cegamente nas decisoes do agente</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar logs e nao monitorar execucoes</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Permitir acoes irreversiveis sem confirmacao</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧪 Exercicio: Agente com Ferramentas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Neste exercicio, voce vai construir um <strong class="text-purple-400">agente simples</strong> que usa 3 ferramentas para completar uma tarefa de pesquisa. O objetivo e praticar o loop ReAct e entender como um agente decide qual ferramenta usar em cada passo.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔧</span> Definicao das 3 Ferramentas
+        </h3>
+        <div class="space-y-4">
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-1">🔍 search(query)</h4>
+            <p class="text-neutral-300 text-sm">Busca informacoes na web ou em uma base de dados. Recebe uma query de busca e retorna trechos relevantes. Simule com 5-10 documentos pre-definidos.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-1">🧮 calculate(expression)</h4>
+            <p class="text-neutral-300 text-sm">Executa calculos matematicos. Recebe uma expressao e retorna o resultado. Util para comparacoes numericas, porcentagens e analises quantitativas.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4">
+            <h4 class="font-semibold text-white mb-1">✍️ write(title, content)</h4>
+            <p class="text-neutral-300 text-sm">Escreve o resultado final em formato estruturado. Recebe titulo e conteudo, produz a resposta formatada para o usuario.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">📋</span> Implementacao do Loop ReAct
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-purple-400">Tarefa:</strong> "Qual e a populacao total dos 3 maiores</p>
+          <p class="mb-2">paises da America do Sul?"</p>
+          <p class="mb-4"></p>
+          <p class="mb-1"><strong class="text-green-400">Iteracao 1:</strong></p>
+          <p class="mb-1">Pensamento: Preciso descobrir os 3 maiores paises.</p>
+          <p class="mb-1">Acao: search("3 maiores paises America do Sul por area")</p>
+          <p class="mb-1">Resultado: Brasil, Argentina, Peru...</p>
+          <p class="mb-4"></p>
+          <p class="mb-1"><strong class="text-green-400">Iteracao 2:</strong></p>
+          <p class="mb-1">Pensamento: Agora preciso das populacoes de cada um.</p>
+          <p class="mb-1">Acao: search("populacao Brasil Argentina Peru 2025")</p>
+          <p class="mb-1">Resultado: Brasil 215M, Argentina 46M, Peru 34M...</p>
+          <p class="mb-4"></p>
+          <p class="mb-1"><strong class="text-green-400">Iteracao 3:</strong></p>
+          <p class="mb-1">Pensamento: Tenho os dados, vou calcular o total.</p>
+          <p class="mb-1">Acao: calculate("215000000 + 46000000 + 34000000")</p>
+          <p class="mb-1">Resultado: 295000000</p>
+          <p class="mb-4"></p>
+          <p class="mb-1"><strong class="text-green-400">Iteracao 4:</strong></p>
+          <p class="mb-1">Pensamento: Tenho a resposta completa. Vou escrever.</p>
+          <p class="mb-1">Acao: write("Populacao dos 3 maiores paises", ...)</p>
+          <p>Resultado: Relatorio final entregue. ✅</p>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Criterios de Avaliacao
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>1.</strong> O agente escolheu a ferramenta certa em cada passo?</li>
+          <li><strong>2.</strong> Os "pensamentos" sao coerentes e levam a proxima acao logica?</li>
+          <li><strong>3.</strong> O agente convergiu para a resposta em poucas iteracoes (sem loops desnecessarios)?</li>
+          <li><strong>4.</strong> O resultado final esta correto e bem estruturado?</li>
+          <li><strong>5.</strong> Teste com uma tarefa impossivel — o agente reconhece e para?</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📝</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Agentes sao LLMs com loop de acao</strong>
+              <span class="text-neutral-400"> — Observam, pensam, agem e iteram ate completar a tarefa</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Planejamento melhora tarefas complexas</strong>
+              <span class="text-neutral-400"> — Decompor em subtarefas e replanejar quando necessario</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Memoria e essencial para coerencia</strong>
+              <span class="text-neutral-400"> — Short-term, long-term, working e summary memory servem propositos diferentes</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Multi-agentes dividem complexidade</strong>
+              <span class="text-neutral-400"> — Agentes especializados coordenados superam um unico agente generalista</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Seguranca nao e opcional</strong>
+              <span class="text-neutral-400"> — Sandboxing, rate limits, human-in-the-loop e logging sao obrigatorios</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Pratique o loop ReAct</strong>
+              <span class="text-neutral-400"> — Construir agentes simples e a melhor forma de entender como funcionam</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">3.5 — Continue aprofundando seus conhecimentos na trilha avancada</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="modulo-3-5.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.8 - Projeto Final e Masterclass | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Inter',sans-serif}.dark body{background-color:#111827}
+    html:not(.dark) body{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 50%,#f1f5f9 100%)}
+    html:not(.dark) .bg-dark-900{background-color:#fff}html:not(.dark) .bg-dark-800{background-color:#f9fafb}html:not(.dark) .bg-dark-700{background-color:#f3f4f6}html:not(.dark) .bg-dark-600{background-color:#e5e7eb}
+    html:not(.dark) .text-neutral-100{color:#111827}html:not(.dark) .text-neutral-300{color:#4b5563}html:not(.dark) .text-neutral-400{color:#6b7280}html:not(.dark) .text-neutral-500{color:#9ca3af}
+    html:not(.dark) .border-dark-600{border-color:#d1d5db}html:not(.dark) .border-dark-700{border-color:#e5e7eb}
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-14"><div class="flex items-center space-x-4"><a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🎯</span><span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span></a><span class="text-neutral-600">|</span><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a></div><div class="flex items-center space-x-1 sm:space-x-2"><a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a><a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Tecnicas</span></a><a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avancado</span></a><button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2"><svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg><svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div></div></nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4"><div class="flex items-center space-x-2 text-sm text-neutral-400"><a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span><a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span><span class="text-purple-400">Modulo 3.8</span></div></nav>
+
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.8</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎓 Projeto Final e Masterclass</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Integre tudo: projete, implemente e avalie um sistema completo de prompts em producao.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Avancado</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Projeto</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span><h2 class="text-2xl font-bold">📋 Briefing do Projeto</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Todo projeto de producao comeca com um <strong class="text-purple-400">briefing claro</strong>. Definir requisitos, stakeholders e metricas de sucesso antes de escrever uma linha de prompt evita retrabalho e garante alinhamento.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Template de Briefing</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-purple-400">1. Problema:</strong> Qual problema este sistema resolve?</p>
+          <p class="mb-2"><strong class="text-purple-400">2. Usuario:</strong> Quem vai usar? Qual o nivel tecnico?</p>
+          <p class="mb-2"><strong class="text-purple-400">3. Escopo:</strong> O que o sistema FAZ e o que NAO faz?</p>
+          <p class="mb-2"><strong class="text-purple-400">4. Metricas:</strong> Como saber se esta funcionando bem?</p>
+          <p class="mb-2"><strong class="text-purple-400">5. Restricoes:</strong> Orcamento, latencia, compliance, privacidade?</p>
+          <p class="mb-2"><strong class="text-purple-400">6. Stakeholders:</strong> Quem aprova? Quem mantem?</p>
+          <p><strong class="text-purple-400">7. Timeline:</strong> MVP em quanto tempo? V1 completa?</p>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Perguntas Essenciais</h3>
+        <p class="text-neutral-300">Antes de comecar: "Qual e o custo de uma resposta errada?" Se o custo e alto (medico, juridico, financeiro), voce precisa de mais guardrails, evals e human-in-the-loop. Se o custo e baixo (sugestoes, brainstorm), pode ser mais permissivo.</p>
+      </div>
+    </section>
+
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span><h2 class="text-2xl font-bold">🏗️ Design do Sistema</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Com o briefing definido, e hora de <strong class="text-purple-400">arquitetar o sistema</strong>. Escolher modelos, definir prompts, projetar o pipeline e documentar decisoes de design.</p>
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📊</span> Decisoes de Design</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-bold text-purple-400 mb-3">Escolhas de Modelo</h4>
+            <ul class="space-y-2 text-neutral-300">
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Qual modelo para cada etapa do pipeline?</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Trade-off: qualidade vs custo vs latencia</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Fallback: qual modelo alternativo?</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Fine-tuning necessario?</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-purple-400 mb-3">Arquitetura do Pipeline</h4>
+            <ul class="space-y-2 text-neutral-300">
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Quantas etapas? Sequencial ou paralelo?</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>RAG necessario? Qual vector store?</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Tools/function calling? Quais funcoes?</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Caching? Em qual camada?</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Documentacao de Arquitetura</h3>
+        <p class="text-neutral-300 mb-3">Documente cada decisao com o formato:</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1"><strong class="text-purple-400">Decisao:</strong> Usar Claude Sonnet como modelo principal</p>
+          <p class="mb-1"><strong class="text-purple-400">Contexto:</strong> Precisamos de boa qualidade com latencia < 3s</p>
+          <p class="mb-1"><strong class="text-purple-400">Alternativa:</strong> Opus (melhor qualidade, mas 2x mais lento e caro)</p>
+          <p><strong class="text-purple-400">Trade-off:</strong> Aceitamos qualidade ligeiramente menor por velocidade e custo</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span><h2 class="text-2xl font-bold">💻 Implementacao</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Hora de construir. Aplique tudo que aprendeu: <strong class="text-purple-400">system prompts bem estruturados</strong>, tool schemas claros, pipeline code robusto e boas praticas de engenharia.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Checklist de Implementacao</h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">System prompts</strong> — Escritos com papel, contexto, formato, restricoes e exemplos</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Tool schemas</strong> — JSON schemas com descricoes claras, tipos definidos, validacao</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Pipeline code</strong> — Modular, com error handling, logging, metricas</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Guardrails</strong> — Input validation, output filtering, rate limiting</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Fallbacks</strong> — Retry logic, modelo alternativo, resposta default</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Configuracao</strong> — Parametros externalizados (temperature, model, max_tokens)</div></div>
+        </div>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">🚨</span> Erros Comuns na Implementacao</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Hardcoded prompts:</strong> Prompts no codigo dificultam iteracao — externalize em arquivos ou config</li>
+          <li><strong>Sem versionamento:</strong> Toda mudanca de prompt deve ser rastreavel — use Git para prompts tambem</li>
+          <li><strong>Error handling fraco:</strong> "try/except: pass" nao e error handling — logue, alerte, tenha fallback</li>
+          <li><strong>Testes so no final:</strong> Teste cada componente isoladamente antes de integrar o pipeline completo</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span><h2 class="text-2xl font-bold">🧪 Testes e Evals</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Um sistema sem testes e uma bomba-relogio. Aplique <strong class="text-purple-400">multiplas camadas de teste</strong>: unitarios, integracao, evals de qualidade e red teaming.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">Testes Funcionais</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Unit tests:</strong> Cada componente isoladamente (parser, validator, router)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Integration tests:</strong> Pipeline completo end-to-end com inputs conhecidos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Edge cases:</strong> Inputs vazios, muito longos, em outro idioma, com emojis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Error paths:</strong> Timeout, modelo indisponivel, resposta malformada</span></li>
+          </ul>
+        </div>
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">Evals e Seguranca</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Quality evals:</strong> Dataset de golden answers com metricas definidas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>LLM-as-Judge:</strong> Avaliacao automatizada de qualidade, tom, relevancia</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Red teaming:</strong> Tentativas de injection, jailbreak, extracao de dados</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Regression:</strong> Suite que roda a cada mudanca para garantir que nada quebrou</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Cobertura Minima Recomendada</h3>
+        <p class="text-neutral-300">Para producao: minimo 50 casos de teste no dataset de eval, cobrindo todos os dominios de uso. 10 casos adversariais de red teaming. Agreement rate do LLM-as-Judge acima de 80% com avaliacao humana. Suite rodando em CI a cada PR.</p>
+      </div>
+    </section>
+
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span><h2 class="text-2xl font-bold">🚀 Deploy e Monitoramento</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Colocar em producao e so o comeco. O sistema precisa de <strong class="text-purple-400">monitoramento continuo</strong>, feedback loops e capacidade de iteracao rapida pos-deploy.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Checklist de Deploy</h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Evals passando</strong> — Todos os scores acima dos thresholds minimos</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Red teaming feito</strong> — ASR abaixo de 5%, vulnerabilidades corrigidas</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Monitoring configurado</strong> — Dashboards, alertas, on-call definido</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Rollback pronto</strong> — Mecanismo testado para reverter em minutos</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Budget caps ativos</strong> — Limites de custo configurados e alertando</div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400">□</span><div><strong class="text-white">Feedback loop</strong> — Mecanismo para coletar feedback do usuario final</div></div>
+        </div>
+      </div>
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🔄</span> Iteracao Pos-Deploy</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Semana 1:</strong> Monitorar intensivamente — latencia, erros, feedback, custo. Corrigir issues criticos</li>
+          <li><strong>Semana 2-4:</strong> Analisar padroes de uso real, adicionar casos de teste baseados em queries reais</li>
+          <li><strong>Mensal:</strong> Review de metricas, otimizacao de custo, atualizacao de prompts baseada em dados</li>
+          <li><strong>Trimestral:</strong> Avaliar novos modelos, revalidar arquitetura, atualizar guardrails</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span><h2 class="text-2xl font-bold">🎓 Apresentacao e Review</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">O projeto so esta completo quando voce consegue <strong class="text-purple-400">explicar e defender suas decisoes</strong>. A apresentacao final e uma oportunidade de consolidar o aprendizado e receber feedback.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Formato de Apresentacao</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-purple-400">1. Problema (2 min):</strong> Qual problema resolve e para quem</p>
+          <p class="mb-2"><strong class="text-purple-400">2. Arquitetura (3 min):</strong> Diagrama do pipeline, modelos, tools</p>
+          <p class="mb-2"><strong class="text-purple-400">3. Demo ao vivo (5 min):</strong> Mostrar o sistema funcionando com inputs reais</p>
+          <p class="mb-2"><strong class="text-purple-400">4. Metricas (3 min):</strong> Resultados dos evals, scores, custo por query</p>
+          <p class="mb-2"><strong class="text-purple-400">5. Desafios (2 min):</strong> O que foi dificil, o que aprendeu, o que faria diferente</p>
+          <p><strong class="text-purple-400">6. Proximos passos (2 min):</strong> Melhorias planejadas, escalabilidade, roadmap</p>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Retrospectiva e Portfolio</h3>
+        <p class="text-neutral-300">Documente todo o projeto como um case study para seu portfolio: problema, solucao, arquitetura, metricas, lessons learned. Projetos reais de engenharia de prompts sao raros no mercado — isso te diferencia. Compartilhe no LinkedIn, GitHub ou blog pessoal.</p>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📝</span> Resumo do Modulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Briefing define o sucesso</strong><span class="text-neutral-400"> — Requisitos, metricas e restricoes claros desde o inicio</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Design com trade-offs explicitos</strong><span class="text-neutral-400"> — Documente cada decisao e suas alternativas</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Implementacao robusta</strong><span class="text-neutral-400"> — Prompts externalizados, error handling, configuracao flexivel</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Testes em multiplas camadas</strong><span class="text-neutral-400"> — Unit, integration, evals, red teaming, regression</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Deploy e so o comeco</strong><span class="text-neutral-400"> — Monitoramento, feedback loops e iteracao continua</span></div></div>
+        </div>
+        <div class="bg-gradient-to-r from-purple-900/40 to-primary/10 rounded-lg p-6 mb-8 border border-purple-500/30">
+          <h3 class="font-bold text-2xl text-purple-400 mb-3">🎉 Parabens! Voce concluiu a Trilha 3 — Avancado!</h3>
+          <p class="text-neutral-300 mb-4">Voce dominou system prompts, tool use, RAG, guardrails, evals, pipelines e projeto completo. Voce agora tem as habilidades para construir sistemas de prompts de nivel profissional e producao.</p>
+          <p class="text-neutral-400">Continue praticando, iterando e acompanhando as evolucoes do campo. A engenharia de prompts esta apenas comecando.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-7.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
+          <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">🏠 Voltar ao Inicio</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Engenharia de Prompts 2.0 - 2026</p></div></footer>
+  <script>const themeToggle=document.getElementById('theme-toggle'),themeToggleDarkIcon=document.getElementById('theme-toggle-dark-icon'),themeToggleLightIcon=document.getElementById('theme-toggle-light-icon'),html=document.documentElement;if(localStorage.getItem('theme')==='light'||(!localStorage.getItem('theme')&&!html.classList.contains('dark'))){themeToggleDarkIcon.classList.remove('hidden');html.classList.remove('dark')}else{themeToggleLightIcon.classList.remove('hidden')}themeToggle.addEventListener('click',()=>{themeToggleDarkIcon.classList.toggle('hidden');themeToggleLightIcon.classList.toggle('hidden');html.classList.toggle('dark');localStorage.setItem('theme',html.classList.contains('dark')?'dark':'light')})</script>
+</body>
+</html>

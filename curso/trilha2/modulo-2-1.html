@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.1 - Chain-of-Thought (CoT) | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span>/</span>
+      <span class="text-blue-400">Modulo 2.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 2.1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⛓️ Chain-of-Thought (CoT)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Faca o modelo pensar passo a passo para resolver problemas complexos com logica e transparencia.</p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Tecnica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🧠 Pensamento Passo a Passo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-blue-400">Chain-of-Thought (CoT)</strong> e uma tecnica que instrui o modelo a explicitar seu raciocinio intermediario antes de chegar a resposta final. Em vez de pular direto para a conclusao, o modelo "mostra o trabalho" — como um aluno resolvendo uma equacao no quadro.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Por que CoT funciona
+        </h3>
+        <p class="text-neutral-300 mb-4">Quando o modelo gera tokens de raciocinio, ele efetivamente cria mais contexto para si mesmo. Cada passo intermediario influencia os tokens seguintes, guiando a previsao para respostas mais precisas.</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Decomposicao:</strong> Problemas complexos sao quebrados em partes gerenciaveis</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Auto-contexto:</strong> Cada passo gera contexto que melhora o proximo passo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Verificabilidade:</strong> Voce pode identificar onde o raciocinio falhou</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Exemplo Classico
+        </h3>
+        <p class="text-neutral-300 mb-3"><strong>Sem CoT:</strong> "Quanto e 17 x 24?" → O modelo pode errar ao tentar responder direto.</p>
+        <p class="text-neutral-300"><strong>Com CoT:</strong> "Quanto e 17 x 24? Vamos pensar passo a passo." → O modelo decompoe: 17 x 20 = 340, 17 x 4 = 68, 340 + 68 = 408. Resultado correto.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">⚡ Zero-Shot CoT</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A forma mais simples de CoT: basta adicionar uma frase como <strong class="text-blue-400">"Vamos pensar passo a passo"</strong> ao final do prompt, sem fornecer nenhum exemplo. O modelo ativa internamente um modo de raciocinio mais detalhado.
+      </p>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Variacoes do Trigger
+        </h3>
+        <p class="text-neutral-300 mb-3">Existem diversas formas de ativar o raciocinio passo a passo sem exemplos:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>"Vamos pensar passo a passo"</strong> — A frase original do paper de Kojima et al. (2022)</li>
+          <li><strong>"Raciocine antes de responder"</strong> — Variacao em portugues igualmente eficaz</li>
+          <li><strong>"Explique seu raciocinio"</strong> — Foca na transparencia do processo</li>
+          <li><strong>"Antes de dar a resposta final, analise cada aspecto"</strong> — Mais diretivo</li>
+        </ul>
+      </div>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🔬</span> Quando usar Zero-Shot CoT
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span>Problemas com resposta unica e verificavel (matematica, logica)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span>Quando voce nao tem exemplos de referencia disponiveis</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span>Tarefas onde o formato do raciocinio nao precisa ser rigido</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📝 Manual CoT (Few-Shot)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        No <strong class="text-blue-400">Manual CoT</strong>, voce fornece exemplos completos que incluem o raciocinio intermediario. O modelo aprende nao apenas o formato da resposta, mas tambem o <em>estilo de pensamento</em> que deve seguir.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📋</span> Estrutura de um Exemplo CoT
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-blue-400">Pergunta:</strong> Se uma loja tem 15 macas e vende 40% delas, quantas sobram?</p>
+          <p class="mb-1"><strong class="text-blue-400">Raciocinio:</strong></p>
+          <p class="mb-1 ml-4">1. Total de macas: 15</p>
+          <p class="mb-1 ml-4">2. Porcentagem vendida: 40%</p>
+          <p class="mb-1 ml-4">3. Macas vendidas: 15 x 0.40 = 6</p>
+          <p class="mb-1 ml-4">4. Macas restantes: 15 - 6 = 9</p>
+          <p><strong class="text-blue-400">Resposta:</strong> 9 macas.</p>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Numero Ideal de Exemplos
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>2-3 exemplos</strong> — Suficiente para a maioria das tarefas de raciocinio</li>
+          <li><strong>4-6 exemplos</strong> — Para tarefas com alta variabilidade ou multiplos padroes</li>
+          <li><strong>1 exemplo</strong> — Pode funcionar se o padrao e simples e claro</li>
+          <li><strong>Mais de 6</strong> — Raramente necessario; pode causar overhead desnecessario</li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">Seus exemplos devem cobrir cenarios diferentes: um caso simples, um caso medio e um caso limite. Isso ensina ao modelo a adaptar o raciocinio conforme a complexidade do problema, nao apenas seguir um unico padrao.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🎯 Quando Usar CoT</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        CoT nao e uma bala de prata. Funciona excepcionalmente bem para certas categorias de tarefas e <strong class="text-blue-400">pode ser desnecessario ou ate prejudicial</strong> em outras. Saber quando aplicar e tao importante quanto saber como.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-green-900/20 rounded-xl border border-green-500/30 p-6">
+          <h4 class="font-bold text-green-400 mb-4">✓ CoT AJUDA</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Problemas matematicos e aritmeticos</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Raciocinio logico e deducoes</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Analise multi-etapa (comparar, ponderar, decidir)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Diagnostico e troubleshooting</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Tarefas com dados conflitantes ou ambiguos</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ CoT NAO AJUDA</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Traducao direta entre idiomas</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Geracao criativa livre (poesia, brainstorm)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Tarefas de recuperacao simples (FAQ, definicoes)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Formatacao e conversao de dados</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Respostas que ja sao diretas e factuais</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Custo-Beneficio de Tokens
+        </h3>
+        <p class="text-neutral-300 mb-3">CoT gera mais tokens de saida (raciocinio + resposta), o que impacta custo e latencia:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Aumento medio:</strong> 2x a 5x mais tokens de saida</li>
+          <li><strong>Latencia:</strong> Resposta demora proporcionalmente mais</li>
+          <li><strong>Trade-off:</strong> Para tarefas criticas, a precisao extra compensa; para tarefas simples, e desperdicio</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚠️ Limitacoes e Armadilhas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        CoT pode dar uma <strong class="text-blue-400">falsa sensacao de confianca</strong>. Um raciocinio que parece logico e bem estruturado pode estar completamente errado. Entender essas limitacoes e fundamental para usar a tecnica com responsabilidade.
+      </p>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Confabulacao Logica
+        </h3>
+        <p class="text-neutral-300 mb-3">O modelo pode gerar cadeias de raciocinio que parecem validas mas contem erros sutis. Isso e especialmente perigoso porque o formato "passo a passo" transmite autoridade e confianca.</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span>Premissas incorretas apresentadas como fatos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span>Saltos logicos disfarçados de passos intermediarios</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400 mt-1">•</span>
+            <span>Raciocinio circular que chega a conclusao pre-determinada</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+            <span class="text-red-400 font-bold text-sm">!</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Over-Reasoning</h4>
+            <p class="text-neutral-300 text-sm">Para tarefas simples, forcar CoT pode introduzir complexidade desnecessaria. O modelo pode "pensar demais" e chegar a respostas piores do que se respondesse diretamente.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+            <span class="text-red-400 font-bold text-sm">!</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Custo de Tokens</h4>
+            <p class="text-neutral-300 text-sm">Em aplicacoes de producao com alto volume, o custo adicional de tokens de raciocinio pode ser significativo. Avalie se a melhoria na qualidade justifica o investimento.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+            <span class="text-red-400 font-bold text-sm">!</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Dependencia do Modelo</h4>
+            <p class="text-neutral-300 text-sm">A eficacia do CoT varia entre modelos. Modelos menores podem nao se beneficiar tanto quanto modelos maiores. Sempre teste com seu modelo especifico.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧪 Exercicio: CoT na Pratica</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de experimentar. Resolva os tres problemas abaixo <strong class="text-blue-400">primeiro sem CoT, depois com CoT</strong>, e compare os resultados. O objetivo e sentir na pratica a diferenca que o raciocinio explicito faz.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📋</span> Desafio 1: Matematica
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 mb-3">
+          <p class="mb-2"><strong>Problema:</strong> Uma loja oferece 20% de desconto em compras acima de R$200. Joao compra 3 camisetas de R$89 cada. Qual o valor final?</p>
+        </div>
+        <p class="text-neutral-400 text-sm">Teste sem CoT e depois com "Pense passo a passo antes de responder". Compare as respostas.</p>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Desafio 2: Logica
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 mb-3">
+          <p class="mb-2"><strong>Problema:</strong> Ana e mais alta que Beatriz. Carlos e mais baixo que Beatriz. Diana e mais alta que Ana. Quem e a segunda pessoa mais alta?</p>
+        </div>
+        <p class="text-neutral-400 text-sm">Sem CoT, modelos frequentemente erram a ordenacao. Com CoT, a precisao sobe significativamente.</p>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Desafio 3: Analise de Texto
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 mb-3">
+          <p class="mb-2"><strong>Problema:</strong> Analise a seguinte avaliacao de produto e classifique o sentimento como positivo, negativo ou misto. Justifique: "O produto chegou rapido e a embalagem era otima, mas a qualidade do material me decepcionou. Pelo preco, esperava mais."</p>
+        </div>
+        <p class="text-neutral-400 text-sm">CoT ajuda o modelo a ponderar os elementos positivos e negativos antes de classificar.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📝</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">CoT forca raciocinio explicito</strong>
+              <span class="text-neutral-400"> — O modelo mostra o trabalho antes de dar a resposta final</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Zero-Shot CoT e simples</strong>
+              <span class="text-neutral-400"> — Basta adicionar "Pense passo a passo" ao prompt</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Manual CoT da mais controle</strong>
+              <span class="text-neutral-400"> — Exemplos com raciocinio explicito definem o padrao</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Nem sempre e a melhor opcao</strong>
+              <span class="text-neutral-400"> — Tarefas simples nao precisam de CoT; avalie o trade-off</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Cuidado com confabulacao logica</strong>
+              <span class="text-neutral-400"> — Raciocinio bonito nao garante raciocinio correto</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">2.2 — Few-Shot Avancado: domine a arte de ensinar pelo exemplo</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Voltar para Trilha
+          </a>
+          <a href="modulo-2-2.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

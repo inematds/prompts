@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.6 - Avaliacao Automatizada (Evals) | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Inter',sans-serif}.dark body{background-color:#111827}
+    html:not(.dark) body{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 50%,#f1f5f9 100%)}
+    html:not(.dark) .bg-dark-900{background-color:#fff}html:not(.dark) .bg-dark-800{background-color:#f9fafb}html:not(.dark) .bg-dark-700{background-color:#f3f4f6}html:not(.dark) .bg-dark-600{background-color:#e5e7eb}
+    html:not(.dark) .text-neutral-100{color:#111827}html:not(.dark) .text-neutral-300{color:#4b5563}html:not(.dark) .text-neutral-400{color:#6b7280}html:not(.dark) .text-neutral-500{color:#9ca3af}
+    html:not(.dark) .border-dark-600{border-color:#d1d5db}html:not(.dark) .border-dark-700{border-color:#e5e7eb}
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-14"><div class="flex items-center space-x-4"><a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🎯</span><span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span></a><span class="text-neutral-600">|</span><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a></div><div class="flex items-center space-x-1 sm:space-x-2"><a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a><a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Tecnicas</span></a><a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avancado</span></a><button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2"><svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg><svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div></div></nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4"><div class="flex items-center space-x-2 text-sm text-neutral-400"><a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span><a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span><span class="text-purple-400">Modulo 3.6</span></div></nav>
+
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.6</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📊 Avaliacao Automatizada (Evals)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Crie pipelines de avaliacao automatizada para medir e melhorar a qualidade sistematicamente.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Avancado</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Qualidade</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span><h2 class="text-2xl font-bold">📊 Por que Automatizar Evals</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Avaliacao manual nao escala. Quando voce tem <strong class="text-purple-400">dezenas de prompts em producao</strong> e cada um precisa ser testado com multiplos cenarios, a unica saida e automacao. Evals automatizados sao o "teste unitario" da engenharia de prompts.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Limitacoes da Avaliacao Manual</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-red-400 mt-1">✗</span><span><strong>Inconsistencia:</strong> Dois avaliadores podem discordar sobre a qualidade da mesma resposta</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400 mt-1">✗</span><span><strong>Velocidade:</strong> Avaliar 100 respostas manualmente leva horas; automatizado, segundos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400 mt-1">✗</span><span><strong>Cobertura:</strong> E impossivel testar todos os edge cases manualmente a cada mudanca</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400 mt-1">✗</span><span><strong>Regressao:</strong> Sem evals automatizados, voce nao sabe se uma mudanca quebrou algo que funcionava</span></li>
+        </ul>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> ROI da Automacao</h3>
+        <p class="text-neutral-300">Investir em evals automatizados parece caro no inicio, mas o retorno e exponencial. Uma suite de 50 testes que roda em 2 minutos substitui horas de revisao manual e detecta regressoes que humanos perderiam. O custo de um bug em producao e sempre maior que o custo de um eval.</p>
+      </div>
+    </section>
+
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span><h2 class="text-2xl font-bold">📏 Metricas e Criterios</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Antes de avaliar, voce precisa definir <strong class="text-purple-400">o que medir</strong>. Metricas vagas como "qualidade" nao servem — voce precisa de criterios especificos, mensuraveis e relevantes para o caso de uso.</p>
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📊</span> Tipos de Metricas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-bold text-purple-400 mb-3">Quantitativas</h4>
+            <ul class="space-y-2 text-neutral-300">
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Exatidao (match com golden answer)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Latencia (tempo de resposta)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Custo por query (tokens consumidos)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Comprimento da resposta (dentro do range)</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-purple-400 mb-3">Qualitativas</h4>
+            <ul class="space-y-2 text-neutral-300">
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Relevancia (responde a pergunta?)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Coerencia (logica e fluida?)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Tom adequado (formal, casual?)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Seguranca (sem conteudo proibido?)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">⚖️</span> Metricas Compostas</h3>
+        <p class="text-neutral-300 mb-3">Combine metricas com pesos para criar um score unico:</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1">score_final = (</p>
+          <p class="ml-4 mb-1">exatidao * 0.35 +</p>
+          <p class="ml-4 mb-1">relevancia * 0.25 +</p>
+          <p class="ml-4 mb-1">formato * 0.15 +</p>
+          <p class="ml-4 mb-1">seguranca * 0.15 +</p>
+          <p class="ml-4 mb-1">tom * 0.10</p>
+          <p>)</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span><h2 class="text-2xl font-bold">⚖️ LLM-as-Judge</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">A tecnica mais poderosa para evals qualitativos: usar um <strong class="text-purple-400">LLM como juiz</strong> para avaliar saidas de outro LLM. O juiz recebe uma rubrica e atribui scores de forma consistente e escalavel.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Prompt de Juiz (Template)</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-purple-400">Voce e um avaliador especialista.</strong></p>
+          <p class="mb-2">Avalie a resposta abaixo usando esta rubrica:</p>
+          <p class="mb-1">- <strong class="text-primary">5 (Excelente):</strong> Completa, precisa, bem formatada</p>
+          <p class="mb-1">- <strong class="text-primary">4 (Bom):</strong> Correta com pequenas omissoes</p>
+          <p class="mb-1">- <strong class="text-primary">3 (Adequado):</strong> Parcialmente correta, faltam detalhes</p>
+          <p class="mb-1">- <strong class="text-primary">2 (Fraco):</strong> Erros significativos ou incompleta</p>
+          <p class="mb-3">- <strong class="text-primary">1 (Ruim):</strong> Incorreta ou irrelevante</p>
+          <p class="mb-1"><strong class="text-purple-400">Pergunta:</strong> {pergunta}</p>
+          <p class="mb-1"><strong class="text-purple-400">Resposta:</strong> {resposta}</p>
+          <p><strong class="text-purple-400">Output:</strong> JSON com score e justificativa</p>
+        </div>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">🚨</span> Cuidados com LLM-as-Judge</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Vies de posicao:</strong> O juiz tende a preferir a primeira ou ultima opcao — randomize a ordem</li>
+          <li><strong>Vies de verbosidade:</strong> Respostas mais longas tendem a receber scores maiores sem serem melhores</li>
+          <li><strong>Calibracao:</strong> Valide o juiz contra avaliacoes humanas — busque agreement rate acima de 80%</li>
+          <li><strong>Custo:</strong> Cada eval e uma chamada extra ao LLM — considere usar modelo menor como juiz</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span><h2 class="text-2xl font-bold">📁 Datasets de Teste</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Evals sao tao bons quanto os <strong class="text-purple-400">dados de teste</strong>. Um dataset bem construido cobre o caminho feliz, edge cases, inputs adversariais e cenarios do mundo real.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">Tipos de Casos de Teste</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Golden set:</strong> Perguntas com respostas ideais conhecidas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Edge cases:</strong> Inputs ambiguos, muito longos, vazios</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Adversariais:</strong> Tentativas de injection e jailbreak</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Reais:</strong> Perguntas reais coletadas de usuarios</span></li>
+          </ul>
+        </div>
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">Boas Praticas</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Tamanho minimo:</strong> 30-50 casos para significancia</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Diversidade:</strong> Cobrir todos os cenarios de uso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Versionamento:</strong> Tratar como codigo (Git)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span><strong>Manutencao:</strong> Atualizar quando o dominio muda</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Formato Recomendado</h3>
+        <p class="text-neutral-300">Armazene datasets em JSONL (uma linha JSON por caso): <code class="bg-dark-700 px-2 py-1 rounded text-purple-400">{"input": "...", "expected": "...", "tags": ["edge_case"], "metadata": {}}</code>. Facil de versionar, filtrar e expandir.</p>
+      </div>
+    </section>
+
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span><h2 class="text-2xl font-bold">🔄 CI/CD para Prompts</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Integrar evals no <strong class="text-purple-400">pipeline de CI/CD</strong> garante que nenhuma mudanca em prompt vai para producao sem passar por testes automatizados. E o mesmo principio de software engineering aplicado a prompts.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🔧</span> Pipeline de CI/CD para Prompts</h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3"><span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">1</span><div><strong class="text-white">Commit</strong> — Desenvolvedor altera prompt ou system message no repositorio</div></div>
+          <div class="flex items-start space-x-3"><span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">2</span><div><strong class="text-white">Trigger</strong> — GitHub Actions detecta mudanca e inicia pipeline de evals</div></div>
+          <div class="flex items-start space-x-3"><span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">3</span><div><strong class="text-white">Run</strong> — Executa suite de testes: dataset completo + metricas definidas</div></div>
+          <div class="flex items-start space-x-3"><span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">4</span><div><strong class="text-white">Gate</strong> — Compara scores com thresholds minimos (ex: exatidao >= 0.85)</div></div>
+          <div class="flex items-start space-x-3"><span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">5</span><div><strong class="text-white">Report</strong> — Gera relatorio com diff de performance vs versao anterior</div></div>
+          <div class="flex items-start space-x-3"><span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-semibold">6</span><div><strong class="text-white">Deploy/Block</strong> — Aprova deploy se passou nos gates, bloqueia se regrediu</div></div>
+        </div>
+      </div>
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📊</span> Thresholds e Alertas</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Hard gates:</strong> Score abaixo do minimo bloqueia o deploy automaticamente</li>
+          <li><strong>Soft gates:</strong> Degradacao pequena gera alerta mas permite deploy com aprovacao manual</li>
+          <li><strong>Trend alerts:</strong> Degradacao gradual ao longo de N deploys dispara investigacao</li>
+          <li><strong>Rollback automatico:</strong> Se metricas em producao caem apos deploy, reverter para versao anterior</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span><h2 class="text-2xl font-bold">🧪 Exercicio: Pipeline de Evals</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Construa um <strong class="text-purple-400">pipeline simples de avaliacao</strong> que testa um prompt com 10 casos de teste, calcula metricas e gera um relatorio. Voce vai vivenciar o ciclo completo de eval.</p>
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📋</span> Tarefa do Exercicio</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-purple-400">Passo 1 — Dataset:</strong> Crie 10 casos de teste para um prompt de classificacao de sentimento</p>
+          <p class="ml-4 mb-1">- 4 casos positivos, 3 negativos, 2 neutros, 1 ambiguo</p>
+          <p class="ml-4 mb-3">- Cada caso: input + expected output + tags</p>
+          <p class="mb-2"><strong class="text-purple-400">Passo 2 — Metricas:</strong> Defina 3 metricas</p>
+          <p class="ml-4 mb-1">- Exatidao: match com label esperado</p>
+          <p class="ml-4 mb-1">- Formato: resposta no JSON correto</p>
+          <p class="ml-4 mb-3">- Confianca: modelo indica nivel de certeza</p>
+          <p class="mb-2"><strong class="text-purple-400">Passo 3 — Automacao:</strong> Execute o prompt nos 10 casos e colete resultados</p>
+          <p class="mb-2"><strong class="text-purple-400">Passo 4 — Relatorio:</strong> Calcule scores e identifique padroes de falha</p>
+        </div>
+        <p class="text-neutral-400 text-sm mt-4">Use promptfoo ou um script simples em Python. O importante e o processo, nao a ferramenta.</p>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📝</span> Resumo do Modulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Manual nao escala</strong><span class="text-neutral-400"> — Automacao e essencial para consistencia, velocidade e cobertura</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Metricas precisam ser especificas</strong><span class="text-neutral-400"> — Quantitativas + qualitativas com pesos definidos</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">LLM-as-Judge e poderoso</strong><span class="text-neutral-400"> — Mas precisa de calibracao e cuidado com vieses</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Datasets bem construidos</strong><span class="text-neutral-400"> — Golden sets, edge cases, adversariais, versionados</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">CI/CD para prompts</strong><span class="text-neutral-400"> — Gates, thresholds, reporting e rollback automatico</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3><p class="text-neutral-300">3.7 — Pipelines e Orquestracao: conecte multiplos LLMs e ferramentas em pipelines robustos</p></div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-5.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
+          <a href="modulo-3-7.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Proximo Modulo →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Engenharia de Prompts 2.0 - 2026</p></div></footer>
+  <script>const themeToggle=document.getElementById('theme-toggle'),themeToggleDarkIcon=document.getElementById('theme-toggle-dark-icon'),themeToggleLightIcon=document.getElementById('theme-toggle-light-icon'),html=document.documentElement;if(localStorage.getItem('theme')==='light'||(!localStorage.getItem('theme')&&!html.classList.contains('dark'))){themeToggleDarkIcon.classList.remove('hidden');html.classList.remove('dark')}else{themeToggleLightIcon.classList.remove('hidden')}themeToggle.addEventListener('click',()=>{themeToggleDarkIcon.classList.toggle('hidden');themeToggleLightIcon.classList.toggle('hidden');html.classList.toggle('dark');localStorage.setItem('theme',html.classList.contains('dark')?'dark':'light')})</script>
+</body>
+</html>

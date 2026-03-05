@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.4 - Prompt Chaining | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-blue-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span>/</span>
+      <span class="text-blue-400">Modulo 2.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 2.4
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔗 Prompt Chaining</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Divida tarefas complexas em etapas conectadas: cada saida alimenta a proxima entrada.</p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Tecnica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">⛓️ Conceito de Chaining</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-blue-400">Prompt chaining</strong> e a tecnica de dividir uma tarefa complexa em multiplos prompts sequenciais, onde a saida de cada etapa alimenta a entrada da proxima. Pense em funcoes encadeadas: cada uma faz uma coisa bem feita, e juntas resolvem o problema completo.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">💡</span> Por que encadear em vez de um prompt so
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Foco:</strong> Cada prompt faz uma unica coisa, reduzindo chance de erro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Debug:</strong> Se algo falha, voce sabe exatamente em qual etapa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Flexibilidade:</strong> Troque ou melhore uma etapa sem reescrever tudo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Janela de contexto:</strong> Evita estourar o limite de tokens com prompts gigantes</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Analogia com Programacao
+        </h3>
+        <p class="text-neutral-300 mb-3">Assim como em codigo, onde voce nao coloca toda a logica em uma unica funcao de 500 linhas:</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="text-neutral-500">// Em vez de:</p>
+          <p class="mb-2">fazTudo(dados) → resultado</p>
+          <p class="text-neutral-500">// Voce faz:</p>
+          <p class="mb-1">etapa1 = extrair(dados)</p>
+          <p class="mb-1">etapa2 = analisar(etapa1)</p>
+          <p>resultado = formatar(etapa2)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">✂️ Divisao de Tarefas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O segredo do chaining eficaz esta na <strong class="text-blue-400">decomposicao correta</strong>. Cada etapa deve ter responsabilidade unica, entrada e saida bem definidas, e ser testavel isoladamente.
+      </p>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Principio da Responsabilidade Unica
+        </h3>
+        <p class="text-neutral-300 mb-3">Cada prompt na cadeia deve fazer UMA coisa. Se voce descreve a etapa e precisa usar "e" ou "tambem", provavelmente deve dividir em duas:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong class="text-red-400">Ruim:</strong> "Extraia os dados E analise os padroes E gere recomendacoes"</li>
+          <li><strong class="text-green-400">Bom:</strong> Etapa 1: Extrair dados → Etapa 2: Analisar padroes → Etapa 3: Gerar recomendacoes</li>
+        </ul>
+      </div>
+
+      <div class="space-y-4 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">A</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Granularidade</h4>
+            <p class="text-neutral-300 text-sm">Etapas muito grandes perdem o beneficio do chaining. Etapas muito pequenas criam overhead desnecessario. O ideal e que cada etapa produza um artefato verificavel (lista, resumo, JSON, classificacao).</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">B</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Dependencias</h4>
+            <p class="text-neutral-300 text-sm">Mapeie quais etapas dependem de quais. Etapas independentes podem rodar em paralelo. Etapas dependentes devem ser sequenciais. Isso impacta tanto o design quanto a performance.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <span class="text-blue-400 font-bold text-sm">C</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-4 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Contratos de Interface</h4>
+            <p class="text-neutral-300 text-sm">Defina claramente o formato de saida de cada etapa. Se a etapa 1 gera JSON, a etapa 2 deve esperar JSON. Inconsistencias de formato sao a principal causa de falhas em cadeias.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📤 Passagem de Contexto</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A parte mais delicada do chaining: <strong class="text-blue-400">como transferir informacao</strong> entre etapas sem perder dados criticos e sem ultrapassar limites de tokens.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📋</span> Formatos de Passagem
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Texto completo:</strong> Passar toda a saida como entrada da proxima etapa. Simples mas pode ser grande demais.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Resumo:</strong> Adicionar uma etapa de sumarizacao entre etapas para comprimir o contexto.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Dados estruturados:</strong> JSON ou tabelas facilitam a extracao de campos especificos.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Selecao seletiva:</strong> Passar apenas os campos relevantes para a proxima etapa.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Exemplo de Compressao
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="text-neutral-500 mb-2">// Etapa 1 gera analise completa (500 tokens)</p>
+          <p class="text-neutral-500 mb-2">// Etapa intermediaria comprime para campos-chave (100 tokens)</p>
+          <p class="mb-1"><strong class="text-blue-400">Prompt:</strong> "Extraia apenas: sentimento, topicos_principais,</p>
+          <p class="mb-1">pontos_de_acao do texto abaixo. Formato: JSON."</p>
+          <p class="text-neutral-500 mt-2">// Etapa 2 recebe apenas o JSON comprimido</p>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Perda de Informacao
+        </h3>
+        <p class="text-neutral-300">Cada etapa de compressao pode perder nuances. Se a etapa 3 precisa de um detalhe que foi removido na compressao entre etapa 1 e 2, o resultado sera prejudicado. Planeje cuidadosamente o que cada etapa precisa receber.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">⚠️ Tratamento de Erros na Cadeia</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em uma cadeia, um erro em qualquer etapa se <strong class="text-blue-400">propaga para todas as subsequentes</strong>. Estrategias de tratamento de erros sao essenciais para cadeias robustas e confiaveis.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-green-900/20 rounded-xl border border-green-500/30 p-6">
+          <h4 class="font-bold text-green-400 mb-4">✓ Estrategias Defensivas</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Validar saida de cada etapa antes de prosseguir</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Implementar retries com temperatura diferente</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Salvar checkpoints intermediarios</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-green-400">✓</span>
+              <span>Definir fallbacks para cada etapa</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Erros Comuns</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Confiar cegamente na saida de cada etapa</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Nao ter plano B quando uma etapa falha</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar validacao de formato intermediario</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Cadeia sem logging para diagnostico</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Validacao Intermediaria
+        </h3>
+        <p class="text-neutral-300 mb-3">Entre cada etapa, adicione uma verificacao simples:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Formato:</strong> A saida e JSON valido? Tem os campos esperados?</li>
+          <li><strong>Completude:</strong> Todos os itens foram processados ou faltou algo?</li>
+          <li><strong>Sanidade:</strong> Os valores fazem sentido? (numeros positivos, datas validas)</li>
+          <li><strong>Tamanho:</strong> A saida tem o comprimento esperado ou e suspeitamente curta/longa?</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🏗️ Patterns de Chaining</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Existem <strong class="text-blue-400">padroes arquiteturais</strong> comuns para organizar cadeias de prompts. Conhece-los ajuda a escolher a estrutura certa para cada tipo de problema.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-blue-400 mb-3">1. Sequencial (Pipeline)</h4>
+          <p class="text-neutral-300 text-sm mb-2">A → B → C → D. Cada etapa recebe a saida da anterior. O padrao mais simples e comum.</p>
+          <p class="text-neutral-400 text-sm"><strong>Exemplo:</strong> Extrair dados → Analisar → Sumarizar → Formatar relatorio</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-blue-400 mb-3">2. Paralelo com Merge</h4>
+          <p class="text-neutral-300 text-sm mb-2">A → [B1, B2, B3] → C. Multiplas etapas rodam em paralelo e seus resultados sao combinados.</p>
+          <p class="text-neutral-400 text-sm"><strong>Exemplo:</strong> Analisar sentimento + Extrair entidades + Classificar topico → Combinar em relatorio unico</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-blue-400 mb-3">3. Condicional (Branch)</h4>
+          <p class="text-neutral-300 text-sm mb-2">A → SE(condicao) → B1 ou B2. O fluxo se divide com base no resultado de uma etapa.</p>
+          <p class="text-neutral-400 text-sm"><strong>Exemplo:</strong> Classificar idioma → SE portugues: prompt PT | SE ingles: prompt EN</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-blue-400 mb-3">4. Loop (Iterativo)</h4>
+          <p class="text-neutral-300 text-sm mb-2">A → B → verificar → se nao OK: voltar para B. Repete ate atingir criterio de qualidade.</p>
+          <p class="text-neutral-400 text-sm"><strong>Exemplo:</strong> Gerar texto → Avaliar qualidade → Se nota menor que 8: reescrever → Repetir</p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🔬</span> Como Escolher o Pattern
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Sequencial:</strong> Quando cada etapa depende da anterior e a ordem importa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Paralelo:</strong> Quando etapas sao independentes e velocidade importa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Condicional:</strong> Quando diferentes inputs requerem tratamentos diferentes</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong>Loop:</strong> Quando a qualidade precisa atingir um limiar e pode exigir multiplas tentativas</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧪 Exercicio: Pipeline de 3 Etapas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Construa um <strong class="text-blue-400">pipeline completo de 3 etapas</strong> que transforma dados brutos em um relatorio estruturado. Voce vai projetar, implementar e testar cada etapa.
+      </p>
+
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📋</span> Etapa 1: Pesquisa e Extracao
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 mb-3">
+          <p class="mb-2"><strong>Input:</strong> Um texto longo (artigo, relatorio, transcricao)</p>
+          <p class="mb-2"><strong>Prompt:</strong> Extraia as informacoes-chave em formato JSON: fatos principais, numeros citados, pessoas mencionadas, conclusoes.</p>
+          <p><strong>Output esperado:</strong> JSON estruturado com campos padronizados</p>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Etapa 2: Analise e Insights
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 mb-3">
+          <p class="mb-2"><strong>Input:</strong> O JSON da Etapa 1</p>
+          <p class="mb-2"><strong>Prompt:</strong> Com base nos dados extraidos, identifique: 3 tendencias principais, 2 riscos potenciais, 1 oportunidade. Para cada item, justifique com dados do JSON.</p>
+          <p><strong>Output esperado:</strong> Analise estruturada com justificativas</p>
+        </div>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Etapa 3: Relatorio Final
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 text-sm text-neutral-300 mb-3">
+          <p class="mb-2"><strong>Input:</strong> A analise da Etapa 2</p>
+          <p class="mb-2"><strong>Prompt:</strong> Transforme a analise em um relatorio executivo de 1 pagina: titulo, resumo (3 frases), secao de tendencias, secao de riscos, recomendacao de acao. Tom: profissional e direto.</p>
+          <p><strong>Output esperado:</strong> Relatorio formatado pronto para stakeholders</p>
+        </div>
+        <p class="text-neutral-400 text-sm mt-3"><strong>Bonus:</strong> Adicione uma validacao entre cada etapa para verificar se o formato esta correto antes de prosseguir.</p>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📝</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Chaining divide para conquistar</strong>
+              <span class="text-neutral-400"> — Tarefas complexas viram etapas simples e gerenciaveis</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Responsabilidade unica por etapa</strong>
+              <span class="text-neutral-400"> — Cada prompt faz uma coisa e faz bem feito</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Contexto precisa ser gerenciado</strong>
+              <span class="text-neutral-400"> — Formatos claros e compressao seletiva entre etapas</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Erros se propagam na cadeia</strong>
+              <span class="text-neutral-400"> — Validacao intermediaria e fallbacks sao essenciais</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">4 patterns fundamentais</strong>
+              <span class="text-neutral-400"> — Sequencial, paralelo, condicional e loop para diferentes cenarios</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">2.5 — Tecnicas avancadas de controle e otimizacao de prompts</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="modulo-2-5.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

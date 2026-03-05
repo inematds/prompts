@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.7 - Prompt para Codigo e Dados | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:'#FACC15',dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Inter',sans-serif}.dark body{background-color:#111827}
+    html:not(.dark) body{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 50%,#f1f5f9 100%)}
+    html:not(.dark) .bg-dark-900{background-color:#fff}html:not(.dark) .bg-dark-800{background-color:#f9fafb}html:not(.dark) .bg-dark-700{background-color:#f3f4f6}html:not(.dark) .bg-dark-600{background-color:#e5e7eb}
+    html:not(.dark) .text-neutral-100{color:#111827}html:not(.dark) .text-neutral-300{color:#4b5563}html:not(.dark) .text-neutral-400{color:#6b7280}html:not(.dark) .text-neutral-500{color:#9ca3af}
+    html:not(.dark) .border-dark-600{border-color:#d1d5db}html:not(.dark) .border-dark-700{border-color:#e5e7eb}
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-14"><div class="flex items-center space-x-4"><a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🎯</span><span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span></a><span class="text-neutral-600">|</span><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a></div><div class="flex items-center space-x-1 sm:space-x-2"><a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a><a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Tecnicas</span></a><a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Avancado</span></a><button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2"><svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg><svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div></div></nav>
+
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4"><div class="flex items-center space-x-2 text-sm text-neutral-400"><a href="../../index.html" class="hover:text-blue-400">Inicio</a><span>/</span><a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span><span class="text-blue-400">Modulo 2.7</span></div></nav>
+
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.7</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">💻 Prompt para Codigo e Dados</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Tecnicas especificas para gerar, revisar e debugar codigo e manipular dados estruturados.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Pratica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span><h2 class="text-2xl font-bold">💻 Prompts para Geracao de Codigo</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Gerar codigo com LLMs exige <strong class="text-blue-400">especificidade tecnica</strong>. Quanto mais contexto voce fornecer sobre linguagem, framework, estilo e requisitos, melhor sera o resultado. Um prompt vago gera codigo generico; um prompt preciso gera codigo pronto para uso.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📋</span> Anatomia do Prompt de Codigo</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1"><strong class="text-blue-400">Linguagem:</strong> Python 3.11+</p>
+          <p class="mb-1"><strong class="text-blue-400">Framework:</strong> FastAPI com Pydantic v2</p>
+          <p class="mb-1"><strong class="text-blue-400">Estilo:</strong> Type hints, docstrings Google style, PEP 8</p>
+          <p class="mb-1"><strong class="text-blue-400">Tarefa:</strong> Criar endpoint POST /users que valida email, salva no DB e retorna 201</p>
+          <p class="mb-1"><strong class="text-blue-400">Requisitos:</strong> Validacao de email, tratamento de duplicatas (409), logging</p>
+          <p><strong class="text-blue-400">Testes:</strong> Incluir 3 testes com pytest (sucesso, duplicata, email invalido)</p>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica: Contexto Tecnico</h3>
+        <p class="text-neutral-300">Sempre mencione a versao da linguagem e do framework. Codigo que funciona em Python 3.8 pode nao usar features de 3.11 como match/case. Codigo para React 18 pode usar hooks que nao existiam no React 16. O contexto tecnico evita codigo desatualizado.</p>
+      </div>
+    </section>
+
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span><h2 class="text-2xl font-bold">🔍 Code Review com IA</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">LLMs sao excelentes revisores de codigo quando voce fornece <strong class="text-blue-400">criterios claros de revisao</strong>. Em vez de "revise este codigo", especifique o que procurar: seguranca, performance, legibilidade, bugs potenciais.</p>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Checklist de Review</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Seguranca:</strong> SQL injection, XSS, credenciais hardcoded, validacao de input, autorizacao</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Performance:</strong> Queries N+1, loops desnecessarios, memory leaks, operacoes bloqueantes</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Legibilidade:</strong> Nomes de variaveis, funcoes muito longas, complexidade ciclomatica, comentarios</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Bugs:</strong> Off-by-one, null pointer, race conditions, edge cases nao tratados</span></li>
+          <li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Arquitetura:</strong> Principio de responsabilidade unica, acoplamento, dependencias circulares</span></li>
+        </ul>
+      </div>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🏷️</span> Formato de Feedback</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1">"Para cada problema encontrado, informe:</p>
+          <p class="ml-4 mb-1">- <strong class="text-red-400">[CRITICO]</strong> / <strong class="text-yellow-400">[MEDIO]</strong> / <strong class="text-green-400">[BAIXO]</strong> — severidade</p>
+          <p class="ml-4 mb-1">- Linha(s) afetada(s)</p>
+          <p class="ml-4 mb-1">- Descricao do problema</p>
+          <p class="ml-4">- Sugestao de correcao com codigo"</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span><h2 class="text-2xl font-bold">🐛 Debug Assistido</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Quando algo nao funciona, a qualidade do prompt de debug determina se voce recebe uma solucao rapida ou sugestoes genericas. Forneca <strong class="text-blue-400">contexto estruturado</strong> sobre o bug: o que era esperado, o que aconteceu, o que ja tentou.</p>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-4 flex items-center"><span class="mr-2">🐛</span> Template de Bug Report para IA</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1"><strong class="text-blue-400">Comportamento esperado:</strong> [O que deveria acontecer]</p>
+          <p class="mb-1"><strong class="text-red-400">Comportamento real:</strong> [O que esta acontecendo]</p>
+          <p class="mb-1"><strong class="text-blue-400">Ambiente:</strong> [Python 3.11, Ubuntu 22.04, PostgreSQL 15]</p>
+          <p class="mb-1"><strong class="text-blue-400">Stack trace:</strong> [Colar o erro completo]</p>
+          <p class="mb-1"><strong class="text-blue-400">Codigo relevante:</strong> [Trecho minimo que reproduz o bug]</p>
+          <p><strong class="text-blue-400">Ja tentei:</strong> [Solucoes que nao funcionaram e por que]</p>
+        </div>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Hipoteses e Solucoes</h3>
+        <p class="text-neutral-300">Peca ao modelo para gerar hipoteses rankeadas: "Liste as 3 causas mais provaveis deste bug, em ordem de probabilidade, com um teste simples para confirmar cada uma." Isso e mais eficiente do que pedir uma unica solucao que pode estar errada.</p>
+      </div>
+    </section>
+
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span><h2 class="text-2xl font-bold">📊 Manipulacao de Dados</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">LLMs podem atuar como <strong class="text-blue-400">ferramentas de ETL</strong> (Extract, Transform, Load) para pequenos e medios volumes de dados. Eles entendem CSV, JSON, XML e podem transformar entre formatos com instrucoes em linguagem natural.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📋</span> Prompt para Transformacao de Dados</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-blue-400">Entrada:</strong> CSV com colunas [nome, email, data_nascimento, cidade]</p>
+          <p class="mb-2"><strong class="text-blue-400">Transformacoes:</strong></p>
+          <p class="ml-4 mb-1">1. Padronizar nomes para Title Case</p>
+          <p class="ml-4 mb-1">2. Validar formato de email (marcar invalidos)</p>
+          <p class="ml-4 mb-1">3. Converter data para formato ISO 8601</p>
+          <p class="ml-4 mb-2">4. Normalizar nomes de cidades (acentuacao, abreviacoes)</p>
+          <p><strong class="text-blue-400">Saida:</strong> JSON com campos validados + campo "erros" para linhas problematicas</p>
+        </div>
+      </div>
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">✅</span> Validacao e Formatos de Saida</h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>Sempre valide:</strong> Peca ao modelo para reportar dados inconsistentes em vez de silenciosamente ignora-los ou inventa-los.</li>
+          <li><strong>Especifique o schema:</strong> "Saida em JSON com campos: nome (string), valido (boolean), erros (array de strings)."</li>
+          <li><strong>Limites de volume:</strong> LLMs funcionam bem para 100-500 linhas. Para volumes maiores, peca ao modelo para gerar o script de transformacao em vez de transformar os dados diretamente.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span><h2 class="text-2xl font-bold">🗃️ SQL e Queries com IA</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Gerar SQL a partir de linguagem natural e uma das aplicacoes mais praticas de LLMs. A chave e <strong class="text-blue-400">descrever o schema do banco</strong> antes de pedir a query — sem schema, o modelo inventa nomes de tabelas e colunas.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📋</span> Prompt de SQL Eficaz</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-blue-400">Schema:</strong></p>
+          <p class="ml-4 mb-1">- usuarios (id, nome, email, created_at, plano_id)</p>
+          <p class="ml-4 mb-1">- pedidos (id, usuario_id, valor, status, created_at)</p>
+          <p class="ml-4 mb-2">- planos (id, nome, preco_mensal)</p>
+          <p class="mb-2"><strong class="text-blue-400">Banco:</strong> PostgreSQL 15</p>
+          <p class="mb-2"><strong class="text-blue-400">Pergunta:</strong> Quais usuarios do plano Premium fizeram mais de 5 pedidos no ultimo mes, ordenados por valor total?</p>
+          <p><strong class="text-blue-400">Requisitos:</strong> Query otimizada, com indices sugeridos se necessario</p>
+        </div>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Seguranca em SQL Gerado por IA</h3>
+        <p class="text-neutral-300"><strong>Nunca execute SQL gerado por IA diretamente em producao sem revisao.</strong> Sempre verifique: a query pode alterar dados (UPDATE/DELETE sem WHERE)? Ha risco de SQL injection se parametros vierem do usuario? A query pode causar full table scan em tabelas grandes? Teste primeiro em ambiente de staging.</p>
+      </div>
+    </section>
+
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span><h2 class="text-2xl font-bold">🧪 Exercicio: Pipeline de Dados</h2></div>
+      <p class="text-neutral-300 mb-6 leading-relaxed">Crie uma sequencia de prompts para construir um <strong class="text-blue-400">pipeline completo</strong>: extrair dados de texto nao estruturado, transformar em JSON e gerar um relatorio.</p>
+      <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📋</span> Tarefa do Exercicio</h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-2"><strong class="text-blue-400">Input:</strong> Um email de reclamacao de cliente (texto livre)</p>
+          <p class="mb-3"><strong class="text-blue-400">Pipeline de 3 etapas:</strong></p>
+          <p class="mb-1"><strong class="text-primary">Etapa 1 — Extracao:</strong> Extrair do email: nome do cliente, produto, problema, sentimento (1-5), urgencia (baixa/media/alta)</p>
+          <p class="mb-1"><strong class="text-primary">Etapa 2 — Transformacao:</strong> Converter para JSON estruturado com os campos extraidos + timestamp + ID unico</p>
+          <p><strong class="text-primary">Etapa 3 — Relatorio:</strong> Gerar um resumo executivo para o gerente de atendimento com acao recomendada</p>
+        </div>
+        <p class="text-neutral-400 text-sm mt-4">Dica: cada etapa pode ser um prompt separado, onde a saida de uma alimenta a entrada da proxima. Isso e um padrao de "prompt chaining" aplicado a dados.</p>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📝</span> Resumo do Modulo</h2>
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Prompts de codigo exigem contexto tecnico</strong><span class="text-neutral-400"> — Linguagem, framework, versao, estilo e testes</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Code review com checklist</strong><span class="text-neutral-400"> — Seguranca, performance, legibilidade, bugs com severidade</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Debug estruturado</strong><span class="text-neutral-400"> — Esperado vs real, stack trace, hipoteses rankeadas</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">ETL com LLM</strong><span class="text-neutral-400"> — Transformar dados com validacao e schema de saida definido</span></div></div>
+          <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">SQL com schema</strong><span class="text-neutral-400"> — Sempre descreva o banco antes de pedir a query; revise antes de executar</span></div></div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3><p class="text-neutral-300">2.8 — Otimizacao e Performance: reduza tokens, melhore latencia e maximize qualidade por custo</p></div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-2-6.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
+          <a href="modulo-2-8.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Proximo Modulo →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>Engenharia de Prompts 2.0 - 2026</p></div></footer>
+  <script>const themeToggle=document.getElementById('theme-toggle'),themeToggleDarkIcon=document.getElementById('theme-toggle-dark-icon'),themeToggleLightIcon=document.getElementById('theme-toggle-light-icon'),html=document.documentElement;if(localStorage.getItem('theme')==='light'||(!localStorage.getItem('theme')&&!html.classList.contains('dark'))){themeToggleDarkIcon.classList.remove('hidden');html.classList.remove('dark')}else{themeToggleLightIcon.classList.remove('hidden')}themeToggle.addEventListener('click',()=>{themeToggleDarkIcon.classList.toggle('hidden');themeToggleLightIcon.classList.toggle('hidden');html.classList.toggle('dark');localStorage.setItem('theme',html.classList.contains('dark')?'dark':'light')})</script>
+</body>
+</html>

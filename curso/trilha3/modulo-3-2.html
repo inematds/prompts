@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.2 - Tool Use e Function Calling | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.2</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.2
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔧 Tool Use e Function Calling</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Conecte LLMs a ferramentas externas: APIs, bancos de dados, calculadoras e sistemas reais.</p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">30</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Integracao</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔧 Conceito de Tool Use</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <strong class="text-purple-400">Tool use</strong> (ou function calling) e o paradigma onde o LLM nao apenas gera texto, mas decide quando e qual ferramenta externa chamar para resolver a tarefa do usuario. O modelo analisa a intencao, seleciona a funcao apropriada, gera os argumentos e interpreta o resultado.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🔄</span> Fluxo de Tool Use
+        </h3>
+        <div class="space-y-3 text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">1</span>
+            <span>Usuario faz uma pergunta que requer dados externos (ex.: "Qual o clima em Sao Paulo?")</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">2</span>
+            <span>O modelo identifica que precisa chamar uma ferramenta e gera um JSON com nome da funcao + argumentos</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">3</span>
+            <span>Sua aplicacao executa a funcao real (API call) e retorna o resultado ao modelo</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold">4</span>
+            <span>O modelo interpreta o resultado e gera uma resposta natural para o usuario</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> APIs de Tool Use por Provedor
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>OpenAI:</strong> <code class="bg-dark-700 px-1 rounded">tools</code> parameter com <code class="bg-dark-700 px-1 rounded">type: "function"</code> — suporta chamadas paralelas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Anthropic:</strong> <code class="bg-dark-700 px-1 rounded">tools</code> array com <code class="bg-dark-700 px-1 rounded">input_schema</code> em JSON Schema — suporta tool_choice</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Google:</strong> <code class="bg-dark-700 px-1 rounded">function_declarations</code> com suporte a grounding e code execution</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📐 Function Calling Schema</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O <strong class="text-purple-400">schema da funcao</strong> e o contrato que diz ao modelo o que a ferramenta faz e quais parametros aceita. Um schema bem definido e a diferenca entre o modelo usar a tool corretamente ou gerar chamadas invalidas.
+      </p>
+
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">📝</span> Estrutura de um Schema
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1">{</p>
+          <p class="mb-1 ml-4"><span class="text-purple-400">"name"</span>: "get_weather",</p>
+          <p class="mb-1 ml-4"><span class="text-purple-400">"description"</span>: "Obtem a previsao do tempo atual para uma cidade",</p>
+          <p class="mb-1 ml-4"><span class="text-purple-400">"parameters"</span>: {</p>
+          <p class="mb-1 ml-8">"type": "object",</p>
+          <p class="mb-1 ml-8">"properties": {</p>
+          <p class="mb-1 ml-12">"city": { "type": "string", "description": "Nome da cidade" },</p>
+          <p class="mb-1 ml-12">"unit": { "type": "string", "enum": ["celsius", "fahrenheit"] }</p>
+          <p class="mb-1 ml-8">},</p>
+          <p class="mb-1 ml-8">"required": ["city"]</p>
+          <p class="mb-1 ml-4">}</p>
+          <p>}</p>
+        </div>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Boas Praticas de Schema
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Nomes descritivos:</strong> <code class="bg-dark-700 px-1 rounded">search_products</code> em vez de <code class="bg-dark-700 px-1 rounded">sp</code></span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Descricoes ricas:</strong> Explique quando usar, nao apenas o que faz</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Enums quando possivel:</strong> Restrinja valores validos para evitar erros</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-primary mt-1">•</span>
+            <span><strong>Required explicito:</strong> Marque campos obrigatorios para evitar chamadas incompletas</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📝 Descricao de Ferramentas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A <strong class="text-purple-400">descricao da ferramenta</strong> e o fator mais critico para o modelo decidir quando usa-la. Descricoes vagas levam a chamadas incorretas ou a ferramentas sendo ignoradas quando deveriam ser usadas.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ Descricoes Ruins</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>"Busca dados" — vago demais, quando usar?</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>"Funcao de calculo" — qual tipo de calculo?</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>"Processa input" — nao diz o que retorna</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Descricao identica para tools diferentes</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4">✓ Descricoes Boas</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">✓</span>
+              <span>"Busca produtos no catalogo por nome, categoria ou faixa de preco"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">✓</span>
+              <span>"Calcula frete com base em CEP de origem, destino e peso em kg"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">✓</span>
+              <span>"Converte moedas usando taxa de cambio em tempo real"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400">✓</span>
+              <span>Cada tool com escopo claro e distinto</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Disambiguation
+        </h3>
+        <p class="text-neutral-300 mb-4">Quando voce tem tools parecidas, a descricao deve deixar claro quando usar cada uma:</p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>search_products:</strong> "Use quando o usuario quer encontrar ou comparar produtos. NAO use para verificar status de pedido."</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>get_order_status:</strong> "Use quando o usuario pergunta sobre um pedido existente (envio, entrega, rastreamento). Requer order_id."</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🔄 Orquestracao de Chamadas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em cenarios reais, uma unica interacao pode exigir <strong class="text-purple-400">multiplas chamadas de ferramentas</strong>. Orquestrar essas chamadas — decidir a ordem, gerenciar dependencias e manter o estado — e essencial para construir aplicacoes robustas.
+      </p>
+
+      <div class="space-y-6 mb-6">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold text-sm">Seq</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Chamadas Sequenciais</h4>
+            <p class="text-neutral-300 text-sm mb-2">O resultado de uma chamada alimenta a proxima. Ex.: buscar usuario → buscar pedidos do usuario → calcular frete.</p>
+            <p class="text-neutral-400 text-sm"><strong>Quando usar:</strong> Quando ha dependencia de dados entre as chamadas.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold text-sm">Par</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Chamadas Paralelas</h4>
+            <p class="text-neutral-300 text-sm mb-2">Multiplas chamadas independentes ao mesmo tempo. Ex.: buscar clima + buscar noticias + buscar cotacao — tudo simultaneamente.</p>
+            <p class="text-neutral-400 text-sm"><strong>Quando usar:</strong> Quando as chamadas nao dependem umas das outras. Reduz latencia significativamente.</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+            <span class="text-purple-400 font-bold text-sm">Cnd</span>
+          </div>
+          <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <h4 class="font-semibold text-white mb-2">Chamadas Condicionais</h4>
+            <p class="text-neutral-300 text-sm mb-2">O modelo decide se precisa chamar outra tool com base no resultado anterior. Ex.: se produto esta em estoque, calcular frete; senao, sugerir alternativas.</p>
+            <p class="text-neutral-400 text-sm"><strong>Quando usar:</strong> Quando o fluxo depende de condicoes dinamicas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">⚠️</span> Cuidado com Context Window
+        </h3>
+        <p class="text-neutral-300">Cada chamada de ferramenta e seu resultado consomem tokens da janela de contexto. Em fluxos complexos com muitas chamadas, voce pode atingir o limite. Estrategias: resumir resultados intermediarios, limitar dados retornados, usar paginacao.</p>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚠️ Tratamento de Erros</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Ferramentas externas <strong class="text-purple-400">falham</strong>. APIs ficam fora do ar, parametros sao invalidos, timeouts acontecem. Um sistema robusto precisa lidar com essas falhas de forma elegante, sem expor erros tecnicos ao usuario final.
+      </p>
+
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🛡️</span> Estrategias de Error Handling
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Retry com backoff:</strong> Tentar novamente com espera exponencial (1s, 2s, 4s) para erros transientes como timeout</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Fallback tools:</strong> Se a API principal falha, usar uma alternativa. Ex.: se a API de clima falha, retornar dados em cache</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Mensagem amigavel:</strong> Informar o usuario que o servico esta temporariamente indisponivel, sem expor stack traces</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Logging estruturado:</strong> Registrar cada chamada, parametros, resposta e tempo para debug posterior</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Como Informar o Modelo sobre Erros
+        </h3>
+        <p class="text-neutral-300 mb-3">Quando uma tool falha, retorne um resultado estruturado que ajude o modelo a reagir adequadamente:</p>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="mb-1">{ <span class="text-red-400">"error"</span>: true,</p>
+          <p class="mb-1">  <span class="text-red-400">"error_type"</span>: "service_unavailable",</p>
+          <p class="mb-1">  <span class="text-red-400">"message"</span>: "API de clima indisponivel",</p>
+          <p>  <span class="text-red-400">"suggestion"</span>: "Informe ao usuario e sugira tentar novamente em alguns minutos" }</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🧪 Exercicio: Integrar uma API</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Neste exercicio, voce vai criar um <strong class="text-purple-400">schema completo de tools</strong> para um assistente que combina uma API de clima com uma calculadora. O objetivo e praticar a definicao de schemas, descricoes claras e orquestracao.
+      </p>
+
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">📋</span> Requisitos do Exercicio
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Tool 1 — get_weather:</strong> Recebe cidade e unidade (celsius/fahrenheit), retorna temperatura, condicao e umidade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Tool 2 — calculate:</strong> Recebe expressao matematica como string, retorna o resultado numerico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Tool 3 — convert_unit:</strong> Recebe valor, unidade de origem e unidade de destino (temperatura, distancia, peso)</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Teste seu Schema
+        </h3>
+        <ul class="space-y-2 text-neutral-300">
+          <li><strong>1.</strong> Escreva o JSON Schema completo para cada uma das 3 tools</li>
+          <li><strong>2.</strong> Teste com estas perguntas: "Qual o clima em Tokyo em Fahrenheit?", "Quanto e 15% de 340?", "Converta 100km para milhas"</li>
+          <li><strong>3.</strong> Teste um cenario de orquestracao: "Qual a diferenca de temperatura entre SP e NY em Celsius?"</li>
+          <li><strong>4.</strong> Simule um erro (API fora do ar) e verifique se o modelo reage adequadamente</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📝</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Tool use e o modelo decidindo</strong>
+              <span class="text-neutral-400"> — O LLM escolhe quando e qual ferramenta chamar, gera argumentos e interpreta resultados</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Schema e o contrato</strong>
+              <span class="text-neutral-400"> — JSON Schema com nome, descricao, parametros tipados e required</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Descricoes fazem a diferenca</strong>
+              <span class="text-neutral-400"> — Descricoes claras e disambiguation evitam chamadas incorretas</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Orquestracao de chamadas</strong>
+              <span class="text-neutral-400"> — Sequencial, paralela e condicional conforme as dependencias</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Erros sao inevitaveis</strong>
+              <span class="text-neutral-400"> — Retry, fallback, mensagens amigaveis e logging estruturado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">3.3 — RAG (Retrieval-Augmented Generation): combine busca em documentos com geracao</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="modulo-3-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

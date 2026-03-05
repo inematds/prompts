@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 2 - Tecnicas | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">
+        TRILHA 2
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚡ Tecnicas Avancadas de Prompting</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Domine tecnicas como Chain-of-Thought, Few-Shot, Meta-Prompting e mais. Eleve seus prompts do basico ao profissional com estrategias comprovadas.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">8</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">48</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">~4h</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-blue-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- NAVEGACAO RAPIDA -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <a href="#modulo-2-1" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.1</span>
+        <p class="font-medium text-sm mt-1">Chain-of-Thought (CoT)</p>
+      </a>
+      <a href="#modulo-2-2" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.2</span>
+        <p class="font-medium text-sm mt-1">Few-Shot Avancado</p>
+      </a>
+      <a href="#modulo-2-3" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.3</span>
+        <p class="font-medium text-sm mt-1">Meta-Prompting</p>
+      </a>
+      <a href="#modulo-2-4" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.4</span>
+        <p class="font-medium text-sm mt-1">Prompt Chaining</p>
+      </a>
+      <a href="#modulo-2-5" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.5</span>
+        <p class="font-medium text-sm mt-1">Tree-of-Thought</p>
+      </a>
+      <a href="#modulo-2-6" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.6</span>
+        <p class="font-medium text-sm mt-1">Self-Consistency e Verificacao</p>
+      </a>
+      <a href="#modulo-2-7" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.7</span>
+        <p class="font-medium text-sm mt-1">Prompt para Codigo e Dados</p>
+      </a>
+      <a href="#modulo-2-8" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
+        <span class="text-blue-400 font-bold text-sm">2.8</span>
+        <p class="font-medium text-sm mt-1">Otimizacao e Performance</p>
+      </a>
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="flex items-center mb-8">
+      <div class="flex-1 h-px bg-dark-600"></div>
+      <span class="px-4 text-neutral-500 text-sm font-medium">Conteudo Detalhado</span>
+      <div class="flex-1 h-px bg-dark-600"></div>
+    </div>
+
+    <!-- MODULO 2.1 -->
+    <div id="modulo-2-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.1</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">⛓️ Chain-of-Thought (CoT)</h3>
+        <p class="text-neutral-400 text-sm">Faca o modelo pensar passo a passo para resolver problemas complexos com logica e transparencia.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <div>
+              <span class="font-medium">Pensamento Passo a Passo</span>
+              <span class="text-neutral-500 text-sm ml-2">— A base do raciocinio explicito</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Tecnica que instrui o modelo a decompor seu raciocinio em etapas visiveis antes de chegar a uma conclusao final.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Raciocinio explicito reduz erros logicos, facilita a depuracao e aumenta a precisao em tarefas complexas.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Decomposicao de raciocinio, passos intermediarios, transparencia cognitiva, "vamos pensar passo a passo".</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <div>
+              <span class="font-medium">Zero-Shot CoT</span>
+              <span class="text-neutral-500 text-sm ml-2">— Raciocinio sem exemplos</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Adicionar "Pense passo a passo" ao prompt sem fornecer exemplos de raciocinio. O modelo gera a cadeia sozinho.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">E a forma mais simples de ativar CoT — uma unica frase pode melhorar drasticamente respostas em matematica e logica.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Trigger phrase, zero-shot prompting, ativacao de raciocinio, simplicidade vs eficacia.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <div>
+              <span class="font-medium">Manual CoT</span>
+              <span class="text-neutral-500 text-sm ml-2">— Guiando o raciocinio com exemplos</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Fornecer exemplos completos com raciocinio passo a passo para que o modelo siga o mesmo padrao de pensamento.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Manual CoT oferece maior controle sobre o estilo e profundidade do raciocinio, ideal para dominios especificos.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Exemplos com raciocinio, few-shot CoT, padrao de pensamento, qualidade dos exemplos guia.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <div>
+              <span class="font-medium">Quando Usar CoT</span>
+              <span class="text-neutral-500 text-sm ml-2">— Cenarios ideais e inadequados</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">CoT brilha em matematica, logica e analise. E desnecessario para tarefas simples como formatacao ou traducao direta.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Usar CoT onde nao precisa desperdiça tokens e tempo. Saber quando aplicar maximiza o custo-beneficio.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Complexidade da tarefa, custo de tokens, tarefas analiticas vs criativas, decisao de uso.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <div>
+              <span class="font-medium">Limitacoes e Armadilhas</span>
+              <span class="text-neutral-500 text-sm ml-2">— Quando CoT pode falhar</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">CoT pode gerar raciocinio aparentemente logico mas incorreto, especialmente em problemas com premissas falsas ou dados ambiguos.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Confiar cegamente no raciocinio do modelo e perigoso. Conhecer as limitacoes permite validar criticamente.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Raciocinio plausivel vs correto, alucinacao logica, viés de confirmacao, validacao humana.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <div>
+              <span class="font-medium">Exercicio: CoT na Pratica</span>
+              <span class="text-neutral-500 text-sm ml-2">— Aplicar raciocinio em cadeia</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-blue-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Exercicio pratico: resolver 3 problemas usando Zero-Shot e Manual CoT, comparando qualidade e precisao dos resultados.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">A pratica com ambos os tipos de CoT desenvolve intuicao sobre qual abordagem escolher para cada situacao.</p>
+              </div>
+              <div>
+                <span class="text-blue-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Comparacao Zero-Shot vs Manual, analise de qualidade, escolha de abordagem, documentacao de resultados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-2-1.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.2 -->
+    <div id="modulo-2-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.2</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📚 Few-Shot Avancado</h3>
+        <p class="text-neutral-400 text-sm">Domine a arte de ensinar pelo exemplo: selecao, formatacao e estrategias para few-shot de alta qualidade.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Anatomia do Few-Shot</span><span class="text-neutral-500 text-sm ml-2">— Estrutura de exemplos eficazes</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A estrutura de um few-shot eficaz: pares entrada/saida claros, formato consistente e representatividade dos exemplos.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Exemplos mal estruturados confundem o modelo. Entender a anatomia garante que cada exemplo ensine corretamente.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Par entrada-saida, label consistente, separador claro, quantidade ideal de exemplos (2-5).</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Selecao de Exemplos</span><span class="text-neutral-500 text-sm ml-2">— Escolher os melhores casos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Criterios para selecionar exemplos: diversidade, representatividade, cobertura de edge cases e balanceamento.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Exemplos enviesados geram respostas enviesadas. A selecao cuidadosa determina a qualidade da generalizacao.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Diversidade de exemplos, cobertura de categorias, exemplos positivos e negativos, balanceamento.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Formatacao Consistente</span><span class="text-neutral-500 text-sm ml-2">— Padrao visual entre exemplos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Manter formato identico em todos os exemplos: mesmos delimitadores, labels, espacamento e estrutura de resposta.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Inconsistencia na formatacao confunde o modelo sobre qual padrao seguir, gerando saidas imprevisíveis.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template de exemplo, delimitadores fixos, consistencia de labels, padrao de resposta uniforme.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Few-Shot vs Zero-Shot</span><span class="text-neutral-500 text-sm ml-2">— Quando usar cada abordagem</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Comparacao pratica: zero-shot e mais rapido e barato; few-shot e mais preciso para tarefas especificas ou incomuns.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Saber quando investir em exemplos vs confiar nas instrucoes otimiza tempo, custo e qualidade.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Custo de tokens, complexidade da tarefa, familiaridade do modelo, decisao de abordagem.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Few-Shot com Cadeia de Raciocinio</span><span class="text-neutral-500 text-sm ml-2">— Combinando exemplos e CoT</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exemplos que incluem nao so a resposta, mas todo o raciocinio intermediario, combinando few-shot com CoT.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A combinacao de exemplos com raciocinio explicito e uma das tecnicas mais poderosas para tarefas complexas.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Few-shot CoT, exemplos com raciocinio, padrao de pensamento demonstrado, sinergia de tecnicas.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Few-Shot Otimizado</span><span class="text-neutral-500 text-sm ml-2">— Criar exemplos de alta qualidade</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: criar 3 conjuntos de few-shot para tarefas diferentes, testando impacto de quantidade e qualidade dos exemplos.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica de construir bons exemplos desenvolve a habilidade de ensinar modelos de forma eficiente.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Construcao de exemplos, teste de impacto, iteracao de few-shot, biblioteca de exemplos.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-2.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.3 -->
+    <div id="modulo-2-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.3</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🧠 Meta-Prompting</h3>
+        <p class="text-neutral-400 text-sm">Prompts que criam prompts: automacao, templates dinamicos e geracao de instrucoes em escala.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">O que e Meta-Prompting</span><span class="text-neutral-500 text-sm ml-2">— Prompts sobre prompts</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar o modelo para gerar, analisar ou melhorar prompts. O prompt se torna tanto a ferramenta quanto o produto.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Meta-prompting acelera a criacao de prompts em escala e permite automacao do proprio processo de design.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Recursividade, prompt como produto, automacao de design, escala de producao de prompts.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Templates Dinamicos</span><span class="text-neutral-500 text-sm ml-2">— Prompts com variaveis</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Criar templates com placeholders ({topico}, {publico}, {formato}) que podem ser preenchidos para gerar prompts sob demanda.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Templates eliminam retrabalho e padronizam a qualidade dos prompts em toda a equipe.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Placeholders, variaveis de contexto, template engine, parametrizacao de prompts.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Prompt que Gera Prompt</span><span class="text-neutral-500 text-sm ml-2">— Automacao recursiva</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pedir ao modelo que crie um prompt otimizado para uma tarefa especifica, gerando instrucoes melhores do que voce escreveria.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O modelo conhece suas proprias "preferencias" de instrucao — ele pode criar prompts que funcionam melhor para si mesmo.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Auto-instrucao, geracao de prompts, meta-nivel, otimizacao automatica de instrucoes.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Auto-Refinamento</span><span class="text-neutral-500 text-sm ml-2">— O modelo melhora seu proprio prompt</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pedir ao modelo que critique e melhore um prompt existente, identificando lacunas, ambiguidades e oportunidades.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Auto-refinamento cria um ciclo de melhoria continua sem depender exclusivamente da revisao humana.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Critica automatica, identificacao de gaps, ciclo de melhoria, prompt v1 → v2 → v3.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Meta-Prompting para Equipes</span><span class="text-neutral-500 text-sm ml-2">— Padronizacao em escala</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar meta-prompts para gerar bibliotecas de prompts padronizados para toda a equipe ou organizacao.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escalar qualidade de prompts para equipes grandes requer automacao — meta-prompting e a solucao.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Padronizacao organizacional, biblioteca de prompts, governanca, controle de qualidade em escala.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Gerador de Prompts</span><span class="text-neutral-500 text-sm ml-2">— Criar um meta-prompt funcional</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: construir um meta-prompt que recebe um tema e gera automaticamente um prompt estruturado e otimizado.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Criar seu proprio gerador de prompts e o passo final para dominar meta-prompting na pratica.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Design de meta-prompt, teste de geracao, validacao de saida, iteracao do gerador.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-3.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.4 -->
+    <div id="modulo-2-4" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.4</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔗 Prompt Chaining</h3>
+        <p class="text-neutral-400 text-sm">Divida tarefas complexas em etapas conectadas: cada saida alimenta a proxima entrada.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Conceito de Chaining</span><span class="text-neutral-500 text-sm ml-2">— Prompts em sequencia</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Conectar multiplos prompts em sequencia, onde a saida de um se torna a entrada do proximo, criando um pipeline.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tarefas complexas demais para um unico prompt podem ser decompostas em etapas simples e confiaveis.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pipeline de prompts, entrada/saida encadeada, decomposicao de tarefas, fluxo sequencial.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Divisao de Tarefas</span><span class="text-neutral-500 text-sm ml-2">— Como quebrar em etapas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Identificar os passos logicos de uma tarefa complexa e criar um prompt dedicado para cada etapa.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A habilidade de decompor tarefas e fundamental para criar pipelines confiaveis e debugaveis.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Analise de tarefas, granularidade ideal, dependencias entre etapas, single responsibility.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Passagem de Contexto</span><span class="text-neutral-500 text-sm ml-2">— Transferir informacao entre etapas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tecnicas para passar informacao de um prompt ao proximo: resumo, extracao de campos, formatacao intermediaria.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A qualidade da passagem de contexto determina se a cadeia funciona ou perde informacao critica entre etapas.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Formato intermediario, extracao seletiva, compressao de contexto, fidelidade da informacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Tratamento de Erros na Cadeia</span><span class="text-neutral-500 text-sm ml-2">— Quando uma etapa falha</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrategias para detectar e lidar com falhas em etapas intermediarias: validacao, fallback e retry.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um erro em uma etapa propaga para todas as seguintes. Tratamento de erros torna o pipeline robusto.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Validacao intermediaria, fallback, retry com ajuste, propagacao de erros, circuit breaker.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Patterns de Chaining</span><span class="text-neutral-500 text-sm ml-2">— Padroes reutilizaveis</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Padroes comuns: pesquisa→analise→relatorio, rascunho→revisao→final, extracao→transformacao→validacao.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Patterns testados economizam tempo de design e aumentam a confiabilidade do pipeline.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">ETL de prompts, pipeline de revisao, cadeia de analise, patterns reutilizaveis.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Pipeline de 3 Etapas</span><span class="text-neutral-500 text-sm ml-2">— Construir uma cadeia funcional</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: criar um pipeline de 3 prompts encadeados para uma tarefa real, testando cada etapa individualmente.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Construir um pipeline real consolida todos os conceitos de chaining e revela desafios praticos.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Design de pipeline, teste por etapa, integracao, documentacao de fluxo.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-4.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.5 -->
+    <div id="modulo-2-5" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.5</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🌳 Tree-of-Thought</h3>
+        <p class="text-neutral-400 text-sm">Explore multiplos caminhos de raciocinio em paralelo e selecione o melhor resultado.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Conceito de ToT</span><span class="text-neutral-500 text-sm ml-2">— Arvore de pensamentos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Extensao do CoT que explora multiplos caminhos de raciocinio simultaneamente, como uma arvore de decisoes cognitivas.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Para problemas com multiplas solucoes possiveis, ToT encontra a melhor explorando opcoes que CoT linear ignora.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Ramificacao de raciocinio, exploracao paralela, busca em arvore, comparacao de caminhos.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Geracao de Ramos</span><span class="text-neutral-500 text-sm ml-2">— Criar caminhos alternativos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pedir ao modelo que gere 2-4 abordagens diferentes para resolver o mesmo problema, cada uma com raciocinio proprio.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Gerar multiplas abordagens aumenta a probabilidade de encontrar a solucao otima e revela angulos inesperados.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Divergencia de pensamento, abordagens alternativas, criatividade direcionada, quantidade de ramos.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Avaliacao de Caminhos</span><span class="text-neutral-500 text-sm ml-2">— Julgar cada alternativa</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar o modelo para avaliar cada caminho de raciocinio segundo criterios pre-definidos: corretude, completude, elegancia.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem avaliacao estruturada, ter multiplos caminhos nao ajuda — e preciso saber qual e o melhor.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Criterios de avaliacao, scoring, ranking de solucoes, analise comparativa automatica.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Selecao e Poda</span><span class="text-neutral-500 text-sm ml-2">— Eliminar caminhos fracos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Descartar caminhos que nao atendem criterios minimos e aprofundar os mais promissores, como poda em arvore de busca.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Poda eficiente economiza tokens e tempo, focando recursos nos caminhos com maior potencial de sucesso.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Criterios de corte, limiar minimo, aprofundamento seletivo, eficiencia de exploracao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">ToT vs CoT</span><span class="text-neutral-500 text-sm ml-2">— Quando usar cada tecnica</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">CoT e linear e eficiente para problemas com caminho claro. ToT e para problemas abertos com multiplas solucoes validas.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Usar ToT para problemas simples e desperdiçar recursos. Usar CoT para problemas complexos e perder solucoes melhores.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Linearidade vs ramificacao, custo-beneficio, tipo de problema, decisao de tecnica.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Resolver com ToT</span><span class="text-neutral-500 text-sm ml-2">— Exploracao pratica de caminhos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: resolver um problema de planejamento usando ToT, gerando 3 abordagens, avaliando e selecionando a melhor.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica com ToT real desenvolve a capacidade de estruturar exploracoes de solucoes de forma sistematica.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Design de arvore, geracao de ramos, avaliacao comparativa, selecao fundamentada.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-5.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.6 -->
+    <div id="modulo-2-6" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.6</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔍 Self-Consistency e Verificacao</h3>
+        <p class="text-neutral-400 text-sm">Gere multiplas respostas e use consenso para aumentar a confiabilidade dos resultados.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Principio da Self-Consistency</span><span class="text-neutral-500 text-sm ml-2">— Forca na repeticao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Gerar multiplas respostas para o mesmo prompt e selecionar a mais frequente ou consensual como resultado final.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Respostas unicas podem ser outliers. O consenso entre multiplas geracoes aumenta significativamente a confiabilidade.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Amostragem multipla, convergencia de respostas, reducao de variancia, confianca estatistica.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Votacao por Maioria</span><span class="text-neutral-500 text-sm ml-2">— A resposta mais comum vence</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Executar o mesmo prompt N vezes com temperatura > 0 e escolher a resposta que aparece com mais frequencia.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Votacao por maioria e simples de implementar e eficaz para perguntas com resposta unica (matematica, classificacao).</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Temperatura de amostragem, contagem de votos, limiar de consenso, custo vs confiabilidade.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Verificacao Cruzada</span><span class="text-neutral-500 text-sm ml-2">— Uma resposta valida a outra</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar um segundo prompt para verificar, criticar ou validar a resposta do primeiro, criando um sistema de revisao.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Verificacao cruzada detecta erros, inconsistencias e alucinacoes que passariam despercebidas em uma unica resposta.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt de revisao, deteccao de inconsistencia, papel de critico, validacao automatizada.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">LLM como Juiz</span><span class="text-neutral-500 text-sm ml-2">— O modelo avalia a si mesmo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pedir ao modelo que avalie respostas usando criterios explicitos, atribuindo notas e justificando a avaliacao.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">LLM como juiz escala a avaliacao de qualidade sem depender de revisao humana para cada resposta.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Rubrica de avaliacao, scoring automatico, justificativa de nota, calibracao do juiz.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Quando Usar Verificacao</span><span class="text-neutral-500 text-sm ml-2">— Custo vs beneficio</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Verificacao e mais valiosa quando o custo do erro e alto (saude, financas, codigo) e menos necessaria para tarefas criativas.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Verificacao multiplica o custo em tokens. Saber quando aplicar otimiza o investimento em confiabilidade.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Analise de risco, custo do erro, ROI da verificacao, dominios criticos vs tolerantes.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Consenso de Respostas</span><span class="text-neutral-500 text-sm ml-2">— Pratica de self-consistency</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: gerar 5 respostas para um problema, aplicar votacao por maioria e verificacao cruzada, comparando resultados.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica com self-consistency desenvolve a intuicao sobre quando e como usar verificacao de forma eficiente.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Geracao multipla, analise de consenso, verificacao pratica, documentacao de confianca.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-6.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.7 -->
+    <div id="modulo-2-7" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.7</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">💻 Prompt para Codigo e Dados</h3>
+        <p class="text-neutral-400 text-sm">Tecnicas especificas para gerar, revisar e debugar codigo e manipular dados estruturados.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Prompts para Geracao de Codigo</span><span class="text-neutral-500 text-sm ml-2">— Do requisito ao codigo funcional</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estruturar prompts que geram codigo funcional: especificar linguagem, framework, estilo, testes e tratamento de erros.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts vagos geram codigo que "funciona" mas e inseguro, ineficiente ou dificil de manter.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Especificacao tecnica, linguagem/framework, padroes de codigo, testes unitarios, docstrings.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Code Review com IA</span><span class="text-neutral-500 text-sm ml-2">— Revisao automatizada de codigo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar prompts estruturados para revisar codigo: buscar bugs, vulnerabilidades, problemas de performance e legibilidade.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Code review com IA complementa a revisao humana, detectando padroes que humanos frequentemente perdem.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Checklist de revisao, categorias de problema, severidade, sugestoes de correcao, boas praticas.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Debug Assistido</span><span class="text-neutral-500 text-sm ml-2">— Encontrar e corrigir bugs</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Prompts que ajudam a diagnosticar erros: fornecer codigo, mensagem de erro, contexto e pedir analise sistematica.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Debug assistido por IA acelera drasticamente a resolucao de problemas, especialmente em codebases desconhecidas.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Contexto de erro, stack trace, hipoteses de causa, passos de investigacao, correcao sugerida.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Manipulacao de Dados</span><span class="text-neutral-500 text-sm ml-2">— Transformar e analisar dados</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar prompts para transformar dados entre formatos, limpar datasets, extrair informacoes e gerar analises.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Manipulacao de dados com IA elimina tarefas repetitivas e permite transformacoes complexas em linguagem natural.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">ETL com prompts, conversao de formato, limpeza de dados, extracao de campos, agregacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">SQL e Queries com IA</span><span class="text-neutral-500 text-sm ml-2">— Gerar consultas a partir de perguntas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Transformar perguntas em linguagem natural em queries SQL, fornecendo schema do banco e regras de negocio.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Geracao de SQL com IA democratiza o acesso a dados e acelera analises para usuarios nao-tecnicos.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Schema como contexto, regras de negocio, SQL seguro, validacao de query, otimizacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Pipeline de Dados</span><span class="text-neutral-500 text-sm ml-2">— Extracao, transformacao e analise</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: criar um pipeline de 3 prompts para extrair dados de texto, transformar em JSON e gerar uma analise resumida.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica com pipelines de dados consolida tecnicas de chaining aplicadas a cenarios reais de trabalho.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Extracao estruturada, transformacao de formato, analise automatizada, pipeline end-to-end.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-7.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 2.8 -->
+    <div id="modulo-2-8" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-blue-400 font-bold">2.8</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📈 Otimizacao e Performance</h3>
+        <p class="text-neutral-400 text-sm">Reduza tokens, melhore latencia e maximize a qualidade por custo com tecnicas de otimizacao.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Economia de Tokens</span><span class="text-neutral-500 text-sm ml-2">— Dizer mais com menos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tecnicas para reduzir o consumo de tokens sem perder qualidade: compressao, abreviacoes, remoção de redundancias.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tokens custam dinheiro e afetam latencia. Otimizar tokens reduz custos e acelera respostas significativamente.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Contagem de tokens, redundancia, compressao de instrucoes, prompt enxuto vs verboso.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Latencia vs Qualidade</span><span class="text-neutral-500 text-sm ml-2">— O tradeoff fundamental</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Equilibrio entre velocidade de resposta e qualidade do resultado: prompts menores sao mais rapidos mas podem perder nuance.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Em aplicacoes de producao, latencia importa tanto quanto qualidade. Saber otimizar e essencial.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Tempo de resposta, tamanho do prompt, streaming, modelo menor vs maior, SLA de latencia.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Compressao de Contexto</span><span class="text-neutral-500 text-sm ml-2">— Resumir sem perder informacao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tecnicas para condensar contexto longo em versoes compactas que preservam as informacoes essenciais para a tarefa.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Janelas de contexto tem limite. Comprimir sem perder informacao critica e habilidade essencial para prompts longos.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Resumo progressivo, extracao de pontos-chave, hierarquia de informacao, context window management.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Caching de Prompts</span><span class="text-neutral-500 text-sm ml-2">— Reutilizar resultados anteriores</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Armazenar respostas de prompts frequentes para reutilizacao, evitando chamadas repetidas a API para mesmas perguntas.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Caching pode reduzir custos em 80%+ para casos de uso com prompts repetitivos ou respostas estaveis.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Cache key, TTL, invalidacao, prompt prefix caching, custo de cache vs custo de API.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Metricas de Performance</span><span class="text-neutral-500 text-sm ml-2">— Medir para melhorar</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Metricas essenciais: tokens/resposta, latencia, custo por chamada, taxa de sucesso, qualidade media por rubrica.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem metricas, otimizacao e adivinhacao. Dados concretos guiam decisoes de melhoria com precisao.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Dashboard de metricas, baseline, metas de otimizacao, monitoramento continuo, A/B testing.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Otimizar um Prompt</span><span class="text-neutral-500 text-sm ml-2">— Reduzir custo mantendo qualidade</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: pegar um prompt verboso, medir tokens, otimizar para 50% menos tokens e validar que a qualidade se mantem.</p></div><div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica de otimizacao desenvolve a habilidade de escrever prompts eficientes desde o inicio.</p></div><div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Antes vs depois, contagem de tokens, teste de qualidade, documentacao de otimizacao.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-2-8')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-2-8.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- NAVEGACAO -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="../trilha1/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+        ← Trilha Anterior: Fundamentos
+      </a>
+      <a href="../trilha3/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">
+        Proxima Trilha: Avancado →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- MODALS -->
+  <div id="modal-2-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-blue-400 font-bold">2.1</span>
+          <span class="font-semibold">Chain-of-Thought (CoT)</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.2</span><span class="font-semibold">Few-Shot Avancado</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.3</span><span class="font-semibold">Meta-Prompting</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-4" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.4</span><span class="font-semibold">Prompt Chaining</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-5" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.5</span><span class="font-semibold">Tree-of-Thought</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-6" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.6</span><span class="font-semibold">Self-Consistency e Verificacao</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-7" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.7</span><span class="font-semibold">Prompt para Codigo e Dados</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-7.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-2-8" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.8</span><span class="font-semibold">Otimizacao e Performance</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-8.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Toggle de Topicos
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) {
+          exp.classList.remove('active');
+        }
+      });
+
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
