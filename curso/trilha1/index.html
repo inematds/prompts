@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 1 - Fundamentos | Engenharia de Prompts 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🎯</span>
+            <span class="font-bold text-lg hidden sm:inline">Engenharia de Prompts</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Fundamentos</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Tecnicas</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Avancado</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        TRILHA 1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧭 Fundamentos de Engenharia de Prompts</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Base solida para projetar prompts claros, estruturados e reutilizaveis. Da anatomia basica ate avaliacao de qualidade — tudo que voce precisa para comecar com o pe direito.
+      </p>
+
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">8</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">48</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">~4h</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- NAVEGACAO RAPIDA -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <a href="#modulo-1-1" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.1</span>
+        <p class="font-medium text-sm mt-1">O que e Engenharia de Prompts</p>
+      </a>
+      <a href="#modulo-1-2" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.2</span>
+        <p class="font-medium text-sm mt-1">Anatomia de um Prompt</p>
+      </a>
+      <a href="#modulo-1-3" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.3</span>
+        <p class="font-medium text-sm mt-1">Papel e Contexto</p>
+      </a>
+      <a href="#modulo-1-4" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.4</span>
+        <p class="font-medium text-sm mt-1">Objetivo e Restricoes</p>
+      </a>
+      <a href="#modulo-1-5" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.5</span>
+        <p class="font-medium text-sm mt-1">Formato de Saida</p>
+      </a>
+      <a href="#modulo-1-6" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.6</span>
+        <p class="font-medium text-sm mt-1">Clareza e Escopo</p>
+      </a>
+      <a href="#modulo-1-7" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.7</span>
+        <p class="font-medium text-sm mt-1">Iteracao e Refinamento</p>
+      </a>
+      <a href="#modulo-1-8" class="bg-dark-800 rounded-xl border border-dark-600 p-4 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+        <span class="text-emerald-400 font-bold text-sm">1.8</span>
+        <p class="font-medium text-sm mt-1">Avaliacao e Qualidade</p>
+      </a>
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="flex items-center mb-8">
+      <div class="flex-1 h-px bg-dark-600"></div>
+      <span class="px-4 text-neutral-500 text-sm font-medium">Conteudo Detalhado</span>
+      <div class="flex-1 h-px bg-dark-600"></div>
+    </div>
+
+    <!-- MODULO 1.1 -->
+    <div id="modulo-1-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.1</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🧭 O que e Engenharia de Prompts</h3>
+        <p class="text-neutral-400 text-sm">Entenda a disciplina, como LLMs processam instrucoes e os 5 elementos fundamentais de um prompt.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🧠</span>
+            <div>
+              <span class="font-medium">Definicao e Importancia</span>
+              <span class="text-neutral-500 text-sm ml-2">— O que realmente e engenharia de prompts</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-emerald-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Disciplina de projetar, estruturar e refinar instrucoes para LLMs, obtendo resultados previsiveis e reproduziveis.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Reduz retrabalho, aumenta produtividade e permite criar prompts reutilizaveis para equipes inteiras.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Prompt como interface, qualidade de entrada = qualidade de saida, diferenca entre perguntar e projetar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">⚙️</span>
+            <div>
+              <span class="font-medium">Como LLMs Processam Prompts</span>
+              <span class="text-neutral-500 text-sm ml-2">— Entendendo o modelo por tras</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-emerald-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">LLMs preveem a proxima palavra com base no contexto. Tokenizacao, janela de contexto e probabilidade definem o comportamento.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Entender o mecanismo permite escrever prompts que guiam o modelo de forma previsivel, evitando respostas aleatorias.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Tokens, janela de contexto, previsao probabilistica, temperatura, o prompt como GPS do modelo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🔄</span>
+            <div>
+              <span class="font-medium">Prompt vs Pergunta Simples</span>
+              <span class="text-neutral-500 text-sm ml-2">— A diferenca fundamental</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-emerald-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Um prompt estruturado define papel, objetivo, formato e criterios. Uma pergunta simples e vaga e aceita qualquer resposta.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">A diferenca entre resultado mediocre e excelente esta na estrutura do prompt, nao na capacidade do modelo.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Prompt vago vs estruturado, antes/depois, resultado previsivel vs aleatorio.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🧩</span>
+            <div>
+              <span class="font-medium">Os 5 Elementos de um Prompt</span>
+              <span class="text-neutral-500 text-sm ml-2">— Papel, objetivo, contexto, formato, criterios</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-emerald-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Os 5 blocos: Papel (quem), Objetivo (o que), Contexto (fundo), Formato (como entregar), Criterios (como avaliar).</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Ter uma estrutura clara elimina adivinhacao e permite criar prompts profissionais de forma sistematica.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Role, Task, Context, Output Format, Quality Criteria — o framework base para qualquer prompt.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">🚫</span>
+            <div>
+              <span class="font-medium">Erros Comuns de Iniciantes</span>
+              <span class="text-neutral-500 text-sm ml-2">— Anti-padroes a evitar</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-emerald-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Padroes negativos: pedidos genericos, formato aberto, requisitos vagos, aceitar primeira resposta sem avaliar.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Evitar erros comuns acelera o aprendizado e previne frustracao com resultados inconsistentes.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Preguica cognitiva, fazer vs nao fazer, trocar "bom/claro" por limites concretos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🚀</span>
+            <div>
+              <span class="font-medium">Seu Primeiro Prompt Estruturado</span>
+              <span class="text-neutral-500 text-sm ml-2">— Pratica com template base</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div>
+                <span class="text-emerald-400 font-semibold">O que e:</span>
+                <p class="text-neutral-300 text-sm">Template pratico: Papel + Tarefa + Requisitos + Formato + Criterios. Estrutura reutilizavel para qualquer situacao.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
+                <p class="text-neutral-300 text-sm">Ter um template base elimina o "folha em branco" e permite comecar qualquer prompt de forma profissional.</p>
+              </div>
+              <div>
+                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
+                <p class="text-neutral-300 text-sm">Template base, exemplo antes/depois, exercicio pratico de reescrita de prompts reais.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-1-1.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.2 -->
+    <div id="modulo-1-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.2</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔬 Anatomia de um Prompt</h3>
+        <p class="text-neutral-400 text-sm">Mergulho profundo em cada componente: como cada parte influencia a saida do modelo.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">📐</span>
+            <div>
+              <span class="font-medium">Estrutura vs Conteudo</span>
+              <span class="text-neutral-500 text-sm ml-2">— O esqueleto do prompt</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Separacao entre a forma (como voce organiza) e a substancia (o que voce pede). Estrutura clara permite conteudo flexivel.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um prompt bem estruturado funciona mesmo com conteudos diferentes — e a base da reutilizacao.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Secoes nomeadas, delimitadores, hierarquia de informacao, template vs instancia.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">🎭</span>
+            <div>
+              <span class="font-medium">System Prompt vs User Prompt</span>
+              <span class="text-neutral-500 text-sm ml-2">— Dois niveis de instrucao</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">System prompt define comportamento global; user prompt define a tarefa especifica. APIs permitem separar os dois.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Dominar essa separacao permite criar assistentes com personalidade consistente e tarefas variaveis.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">System message, user message, assistant message, persistencia de contexto.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">📏</span>
+            <div>
+              <span class="font-medium">Delimitadores e Secoes</span>
+              <span class="text-neutral-500 text-sm ml-2">— Organizando visualmente</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Uso de marcadores (""", ---, ###, XML tags) para separar instrucoes, contexto e dados de entrada.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Delimitadores reduzem ambiguidade e permitem que o modelo identifique claramente cada parte do prompt.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Triple quotes, XML tags, markdown headers, separacao instrucao vs dados.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">🔗</span>
+            <div>
+              <span class="font-medium">Instrucoes Explicitas vs Implicitas</span>
+              <span class="text-neutral-500 text-sm ml-2">— O que dizer e o que nao dizer</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Instrucoes explicitas sao diretas ("liste 3 itens"). Implicitas dependem do modelo inferir a partir do contexto.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Saber quando ser explicito e quando confiar na inferencia evita prompts excessivamente longos ou vagos.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Instrucoes positivas vs negativas, "faca X" vs "nao faca Y", nivel de detalhe ideal.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">📝</span>
+            <div>
+              <span class="font-medium">Exemplos (Few-Shot)</span>
+              <span class="text-neutral-500 text-sm ml-2">— Ensinando pelo exemplo</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Incluir 1-3 exemplos de entrada/saida no prompt para que o modelo aprenda o padrao desejado.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Few-shot e uma das tecnicas mais eficazes para alinhar formato e tom sem instrucoes longas.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Zero-shot, one-shot, few-shot, qualidade dos exemplos, quando usar vs quando omitir.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🧪</span>
+            <div>
+              <span class="font-medium">Exercicio: Dissecar um Prompt</span>
+              <span class="text-neutral-500 text-sm ml-2">— Identificar cada elemento</span>
+            </div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: pegar prompts reais e identificar (ou adicionar) cada um dos 5 elementos fundamentais.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica de dissecar prompts desenvolve o olhar critico para reconhecer padroes bons e ruins.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Analise estrutural, gaps de informacao, refactoring de prompts existentes.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
+          Ver em Modal
+        </button>
+        <a href="modulo-1-2.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">
+          Ver Completo
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.3 -->
+    <div id="modulo-1-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.3</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🎭 Papel e Contexto</h3>
+        <p class="text-neutral-400 text-sm">Domine a arte de definir quem o modelo deve ser e quais informacoes de fundo ele precisa.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">👤</span><div><span class="font-medium">Tipos de Papel</span><span class="text-neutral-500 text-sm ml-2">— Especialista, revisor, assistente</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Categorias de papeis: especialista tecnico, revisor critico, assistente didatico, persona de negocio.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O papel certo muda completamente o tom, a profundidade e o angulo da resposta.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Papel generico vs especifico, nivel de expertise, perspectiva profissional.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🎯</span><div><span class="font-medium">Papel com Expertise</span><span class="text-neutral-500 text-sm ml-2">— Adicionando profundidade</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir nivel de experiencia, area de atuacao e estilo de comunicacao do papel.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">"Voce e um analista" e muito diferente de "Voce e um analista senior de dados com 10 anos em e-commerce".</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Qualificadores de expertise, area de dominio, anos de experiencia, estilo de comunicacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🌍</span><div><span class="font-medium">Contexto Minimo Viavel</span><span class="text-neutral-500 text-sm ml-2">— Nem demais, nem de menos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A quantidade certa de informacao de fundo: o suficiente para o modelo atuar sem sobrecarrega-lo.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Contexto insuficiente gera respostas genericas; contexto excessivo confunde e desperdia tokens.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Informacao essencial vs acessoria, publico-alvo, cenario de uso, restricoes de dominio.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">👥</span><div><span class="font-medium">Publico-alvo no Contexto</span><span class="text-neutral-500 text-sm ml-2">— Para quem e a saida</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir quem vai consumir a saida: nivel de conhecimento, funcao, expectativas e linguagem adequada.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um relatorio para CEO e completamente diferente de um para desenvolvedores — o publico define o tom.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Persona do publico, nivel de detalhe, vocabulario adequado, tom de comunicacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">⚠️</span><div><span class="font-medium">Restricoes e Limites</span><span class="text-neutral-500 text-sm ml-2">— O que NAO fazer</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Declarar explicitamente o que o modelo nao deve fazer: evitar jargao, nao inventar dados, nao ultrapassar limites.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Restricoes previnem alucinacoes, resultados fora de escopo e formatos indesejados.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Instrucoes negativas, guardrails, limites de conteudo, controle de tom.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Montar Papel + Contexto</span><span class="text-neutral-500 text-sm ml-2">— Pratica guiada</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: criar 3 combinacoes papel + contexto para cenarios do seu dia a dia profissional.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica com cenarios reais consolida o aprendizado e cria um repertorio de papeis reutilizaveis.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Biblioteca de papeis, contextos por dominio, reutilizacao de patterns.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-3.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.4 -->
+    <div id="modulo-1-4" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.4</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🎯 Objetivo e Restricoes</h3>
+        <p class="text-neutral-400 text-sm">Como definir o que voce quer e estabelecer limites claros para a saida do modelo.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivos SMART em Prompts</span><span class="text-neutral-500 text-sm ml-2">— Especificos, mensuraveis, atingiveis</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Aplicar principios SMART: objetivo especifico, mensuravel, atingivel, relevante e com prazo/limite definido.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Objetivos vagos geram respostas vagas. Objetivos SMART geram respostas precisas e verificaveis.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Especificidade, mensurabilidade, verbos de acao, limites quantitativos.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📋</span><div><span class="font-medium">Tarefas Simples vs Compostas</span><span class="text-neutral-500 text-sm ml-2">— Quando dividir o prompt</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tarefa simples tem um objetivo. Tarefa composta tem multiplos passos que podem ser divididos em prompts separados.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts com muitos objetivos simultaneos perdem qualidade. Dividir melhora cada resultado individual.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt chaining, decomposicao de tarefas, pipeline de prompts, foco unico.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🚧</span><div><span class="font-medium">Restricoes Eficazes</span><span class="text-neutral-500 text-sm ml-2">— Limites que funcionam</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Restricoes que realmente controlam a saida: limites de palavras, tom, formato, conteudo proibido, estilo.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem restricoes claras, o modelo improvisa. Com restricoes, ele entrega exatamente o que voce precisa.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Restricoes de conteudo, formato, tom, tamanho, e a diferenca entre "faca" e "nao faca".</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">⚖️</span><div><span class="font-medium">Equilibrio: Liberdade vs Controle</span><span class="text-neutral-500 text-sm ml-2">— Nem rigido demais, nem solto</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Encontrar o ponto ideal entre controlar demais (respostas mecanicas) e controlar de menos (respostas aleatorias).</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts excessivamente rigidos impedem criatividade; prompts soltos demais nao sao uteis.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Espectro de controle, quando afrouxar, quando apertar, ajuste por tipo de tarefa.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔍</span><div><span class="font-medium">Criterios de Aceitacao</span><span class="text-neutral-500 text-sm ml-2">— Como saber se esta bom</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir antecipadamente o que torna uma resposta aceitavel: checklist de itens que devem estar presentes.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Criterios de aceitacao tornam a avaliacao objetiva em vez de subjetiva ("ficou bom?" vs checklist).</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Checklist de qualidade, criterios objetivos, contagens, presenca/ausencia de elementos.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Objetivo + Restricoes</span><span class="text-neutral-500 text-sm ml-2">— Pratica aplicada</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: pegar 3 tarefas vagas e transformar em objetivos SMART com restricoes e criterios de aceitacao.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A habilidade de transformar "me ajude com X" em um objetivo estruturado e a competencia central.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Transformacao vago→preciso, template de objetivo, biblioteca de restricoes.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-4.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.5 -->
+    <div id="modulo-1-5" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.5</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📄 Formato de Saida</h3>
+        <p class="text-neutral-400 text-sm">Domine Markdown, JSON, tabelas e formatos estruturados para obter saidas consistentes e processaveis.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">📝</span><div><span class="font-medium">Markdown como Padrao</span><span class="text-neutral-500 text-sm ml-2">— Listas, headers, tabelas</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar Markdown para estruturar saidas legiveis: headers para secoes, listas para itens, tabelas para dados.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Markdown e o formato mais versatil — funciona em chats, documentos, apresentacoes e codigo.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Headers (##), listas (- ou 1.), bold (**), tabelas (|), blocos de codigo (```).</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔧</span><div><span class="font-medium">JSON Estruturado</span><span class="text-neutral-500 text-sm ml-2">— Saidas para automacao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pedir saida em JSON com campos definidos, tipos e estrutura. Ideal para integracao com sistemas.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">JSON permite processar resultados automaticamente — essencial para automacoes e pipelines de dados.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Definicao de schema, campos obrigatorios vs opcionais, tipos de dados, arrays e objetos.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">📊</span><div><span class="font-medium">Tabelas e Comparativos</span><span class="text-neutral-500 text-sm ml-2">— Organizando dados visuais</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pedir saida em formato tabular com colunas definidas. Ideal para comparacoes, listas e dados estruturados.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Tabelas facilitam a leitura rapida e a tomada de decisao com dados lado a lado.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Definicao de colunas, limite por celula, alinhamento, quando tabela vs lista.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">📐</span><div><span class="font-medium">Campos Obrigatorios e Opcionais</span><span class="text-neutral-500 text-sm ml-2">— Controlando a completude</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir quais campos a resposta DEVE ter e quais sao opcionais (se aplicavel).</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Campos obrigatorios garantem completude; opcionais permitem flexibilidade sem perder consistencia.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Schema de saida, validacao, campos fixos, campos condicionais, valores padrao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🎨</span><div><span class="font-medium">Tom e Estilo na Saida</span><span class="text-neutral-500 text-sm ml-2">— Controlando a voz</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir tom (formal, casual, tecnico), estilo (conciso, detalhado) e nivel de linguagem na saida.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O mesmo conteudo precisa de tons diferentes conforme o publico e o canal de comunicacao.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Tom formal vs informal, nivel tecnico, concisao, vocabulario controlado.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Formatos na Pratica</span><span class="text-neutral-500 text-sm ml-2">— Mesmo conteudo, 3 formatos</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: pegar uma mesma tarefa e pedir saida em Markdown, JSON e tabela. Comparar resultados.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Dominar formatos permite escolher a melhor representacao para cada cenario de uso.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Conversao entre formatos, escolha de formato por caso de uso, validacao de saida.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-5.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.6 -->
+    <div id="modulo-1-6" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.6</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔍 Clareza e Escopo</h3>
+        <p class="text-neutral-400 text-sm">Elimine ambiguidade, defina limites claros e escreva prompts que qualquer pessoa consegue reproduzir.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Ambiguidade: o Inimigo #1</span><span class="text-neutral-500 text-sm ml-2">— Identificar e eliminar</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Palavras e frases que podem ser interpretadas de multiplas formas pelo modelo, gerando resultados imprevisíveis.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Ambiguidade e a causa #1 de respostas insatisfatorias — elimina-la resolve a maioria dos problemas.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Palavras ambiguas ("bom", "completo", "detalhado"), teste de interpretacao, desambiguacao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📏</span><div><span class="font-medium">Escopo Bem Definido</span><span class="text-neutral-500 text-sm ml-2">— O que entra e o que nao entra</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Delimitar claramente o que a resposta deve cobrir e, igualmente importante, o que nao deve.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escopo indefinido gera respostas enormes e genericas. Escopo claro gera respostas focadas e uteis.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Inclusao vs exclusao, limites de cobertura, profundidade vs amplitude, foco tematico.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">✍️</span><div><span class="font-medium">Linguagem Precisa</span><span class="text-neutral-500 text-sm ml-2">— Palavras que funcionam</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar verbos de acao claros, quantificadores e termos tecnicos em vez de adjetivos vagos.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">"Liste 5 itens" e infinitamente mais claro que "liste alguns itens relevantes".</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verbos de acao, quantificadores, substituicao de adjetivos por metricas, vocabulario de precisao.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🔄</span><div><span class="font-medium">Reproducibilidade</span><span class="text-neutral-500 text-sm ml-2">— Mesmo prompt, mesmo resultado</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Escrever prompts que qualquer pessoa pode usar e obter resultados similares, independente de quem executa.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts reproduziveis podem ser compartilhados em equipes e automatizados com confianca.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Determinismo, variaveis, teste com diferentes usuarios, documentacao de prompt.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">📋</span><div><span class="font-medium">Checklist de Clareza</span><span class="text-neutral-500 text-sm ml-2">— Verificacao rapida</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Lista de verificacao rapida para garantir clareza antes de enviar: objetivo, formato, criterios, escopo.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">30 segundos de verificacao podem salvar 30 minutos de retrabalho com respostas inadequadas.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pre-flight check, 5 perguntas de validacao, revisao por pares de prompts.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Desambiguar Prompts</span><span class="text-neutral-500 text-sm ml-2">— Reescrever sem ambiguidade</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: receber prompts ambiguos e reescreve-los com clareza total, testando antes e depois.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica de desambiguacao desenvolve o olhar critico para escrever prompts claros naturalmente.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Analise de ambiguidade, reescrita com criterios, teste A/B de prompts.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-6.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.7 -->
+    <div id="modulo-1-7" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.7</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔄 Iteracao e Refinamento</h3>
+        <p class="text-neutral-400 text-sm">O ciclo de melhoria continua: testar, avaliar, ajustar e repetir ate atingir a qualidade desejada.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🔁</span><div><span class="font-medium">O Ciclo de Refinamento</span><span class="text-neutral-500 text-sm ml-2">— Testar, avaliar, ajustar</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Processo iterativo: enviar prompt → avaliar resultado → identificar gaps → ajustar → reenviar. Nunca aceitar a primeira versao.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts excelentes raramente surgem na primeira tentativa. A iteracao sistematica garante melhoria continua.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Ciclo PDCA aplicado a prompts, versioning, comparacao de resultados, log de mudancas.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🧪</span><div><span class="font-medium">Teste em Casos Faceis e Dificeis</span><span class="text-neutral-500 text-sm ml-2">— Validacao robusta</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Testar o mesmo prompt com entradas faceis (caso ideal) e dificeis (edge cases, ambiguidades).</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um prompt que funciona so no caso facil nao e confiavel. Testar em dificeis revela fragilidades.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Happy path, edge cases, entradas ambiguas, teste de robustez, casos limites.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔧</span><div><span class="font-medium">Tecnicas de Ajuste</span><span class="text-neutral-500 text-sm ml-2">— O que mudar quando nao funciona</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrategias para corrigir problemas: adicionar contexto, restringir formato, mudar papel, incluir exemplos.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Saber o que ajustar (e o que nao ajustar) economiza tempo e evita mudar o prompt inteiro.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Ajuste fino vs reescrita, uma mudanca por vez, diagnostico de problema, causa raiz.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">📊</span><div><span class="font-medium">Comparacao de Versoes</span><span class="text-neutral-500 text-sm ml-2">— Medir melhoria real</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Comparar resultados entre versoes do prompt usando criterios pre-definidos. Documentar o que mudou e por que.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem comparacao sistematica, voce nao sabe se o ajuste realmente melhorou ou piorou o resultado.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Versionamento de prompts, changelog, metricas de comparacao, teste A/B.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">📁</span><div><span class="font-medium">Biblioteca de Prompts</span><span class="text-neutral-500 text-sm ml-2">— Salvar e reutilizar</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Organizar prompts testados e aprovados em uma biblioteca pessoal ou de equipe para reutilizacao.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts validados sao ativos valiosos. Uma biblioteca evita recriar do zero e padroniza a equipe.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Organizacao por categoria, tags, documentacao de uso, compartilhamento, template vs instancia.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio: Iterar 3 Vezes</span><span class="text-neutral-500 text-sm ml-2">— Refinamento progressivo</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio: criar um prompt, testar, ajustar 3 vezes documentando cada mudanca e seu impacto.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A pratica de iteracao deliberada constroi a intuicao para saber o que ajustar rapidamente.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Iteracao deliberada, documentacao de mudancas, analise de impacto, convergencia.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-7.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULO 1.8 -->
+    <div id="modulo-1-8" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.8</span>
+          <span class="text-xs text-neutral-500">~30 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">✅ Avaliacao e Qualidade</h3>
+        <p class="text-neutral-400 text-sm">Criterios objetivos, rubricas e checklists para avaliar prompts e respostas de forma sistematica.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">📏</span><div><span class="font-medium">Criterios Objetivos vs Subjetivos</span><span class="text-neutral-500 text-sm ml-2">— Medir em vez de opinar</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Criterios objetivos (contagens, presenca, formato) vs subjetivos (tom, qualidade percebida). Priorizar objetivos.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Avaliacao subjetiva varia entre pessoas. Criterios objetivos garantem consistencia na equipe.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Metricas quantitativas, checklist binaria, escala de avaliacao, calibracao entre avaliadores.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📋</span><div><span class="font-medium">Rubrica de Avaliacao</span><span class="text-neutral-500 text-sm ml-2">— Sistema de pontuacao</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Sistema de 0-2 por criterio: clareza do objetivo, formato, criterios verificaveis, consistencia, teste. Meta: 7/10+.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Uma rubrica transforma avaliacao de "achismo" em processo sistematico e replicavel.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Escala 0-2, 5 dimensoes, meta de corte, autoavaliacao, avaliacao por pares.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔍</span><div><span class="font-medium">Validacao de Formato</span><span class="text-neutral-500 text-sm ml-2">— A saida veio como pediu?</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Verificar se a saida respeita o formato pedido: JSON valido, numero de itens, campos presentes, limites.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Validacao de formato e automatizavel e garante que a saida pode ser processada por outros sistemas.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">JSON schema, contagem de itens, campos obrigatorios, limites de tamanho, parsabilidade.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">⚖️</span><div><span class="font-medium">Consistencia entre Execucoes</span><span class="text-neutral-500 text-sm ml-2">— O mesmo prompt da o mesmo resultado?</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Executar o mesmo prompt multiplas vezes e verificar se os resultados sao consistentes em estrutura e qualidade.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um prompt que funciona "as vezes" nao e confiavel. Consistencia e indicador de qualidade do prompt.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Reproducibilidade, variancia de saida, temperatura, determinismo, teste de estabilidade.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🏆</span><div><span class="font-medium">Criterios de Dominio</span><span class="text-neutral-500 text-sm ml-2">— Como saber que voce domina</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Indicadores de que voce domina fundamentos: declara objetivo/formato/criterios em cada prompt, testa e refina.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Saber onde voce esta no caminho de aprendizado permite focar nas areas que mais precisam de atencao.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Autoavaliacao, marco de competencia, progresso mensuravel, portfolio de prompts.</p></div></div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧪</span><div><span class="font-medium">Exercicio Final: Avaliacao Completa</span><span class="text-neutral-500 text-sm ml-2">— Aplicar rubrica em prompts reais</span></div></button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio final: avaliar 3 prompts (seus e de outros) usando a rubrica completa e sugerir melhorias.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Avaliar prompts de terceiros desenvolve visao critica e consolida todos os conceitos da trilha.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Avaliacao cruzada, feedback construtivo, plano de melhoria, reflexao sobre o aprendizado.</p></div></div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-8')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-8.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- NAVEGACAO -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+        ← Voltar ao Inicio
+      </a>
+      <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+        Proxima Trilha: Tecnicas →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- MODALS -->
+  <div id="modal-1-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-emerald-400 font-bold">1.1</span>
+          <span class="font-semibold">O que e Engenharia de Prompts</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">Anatomia de um Prompt</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.3</span><span class="font-semibold">Papel e Contexto</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-4" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.4</span><span class="font-semibold">Objetivo e Restricoes</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-5" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.5</span><span class="font-semibold">Formato de Saida</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-6" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.6</span><span class="font-semibold">Clareza e Escopo</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-7" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.7</span><span class="font-semibold">Iteracao e Refinamento</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-7.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <div id="modal-1-8" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.8</span><span class="font-semibold">Avaliacao e Qualidade</span></div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-1-8.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Engenharia de Prompts 2.0 - 2026</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Toggle de Topicos
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) {
+          exp.classList.remove('active');
+        }
+      });
+
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
